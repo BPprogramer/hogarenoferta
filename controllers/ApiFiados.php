@@ -230,7 +230,7 @@ use Model\ProductosVenta;
                 return;
             } catch (Exception $e) {
              
-                $db->rollback();s
+                $db->rollback();
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
                 return;
             }
