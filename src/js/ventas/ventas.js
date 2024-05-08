@@ -2,7 +2,7 @@
     const ventas = document.querySelector('#ventas');
     if(ventas){
         let tablaVentas;
-
+    
         $('#tabla').on('click', '#editar', function(e){
             id=e.currentTarget.dataset.ventaId;
          
@@ -14,8 +14,31 @@
         })
         $('#tabla').on('click', '#eliminar', function(e){
             const ventaId = e.currentTarget.dataset.ventaId;
+            console.log(ventaId)
             alertaEliminarVenta(ventaId,e);
         })
+        $('#tabla').on('click', '#imprimir', function(e){
+            const ventaId = e.currentTarget.dataset.ventaId;
+            imprimirVenta(ventaId);
+        })
+
+        async function imprimirVenta(id){
+            const datos = new FormData();
+            datos.append('id', id);
+            const url = `${location.origin}/api/imprimir-venta?id=${id}`;
+            window.open(url, "_blank");
+         
+            // try {
+            //     const respuesta = await fetch(url)
+            //     const resultado = await respuesta.json();
+            //     console.log(resultado)
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+     
+          
+        }
     
 
         async function revisarPagosAsociados(id){

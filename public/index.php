@@ -137,6 +137,11 @@ $router->get('/api/productos-ventas',[ApiVentas::class, 'productos']);
 $router->get('/api/clientes-ventas',[ApiVentas::class, 'clientes']);
 $router->get('/api/codigo-venta',[ApiVentas::class, 'codigoVenta']);
 
+$router->get('/api/imprimir-venta',[ApiVentas::class, 'imprimirVenta']);
+
+
+
+
 /* api a las ventas por mercado libre */
 $router->get('/api/mercadolibre',[ApiMercadoLibre::class, 'index']);
 $router->get('/api/pagos-auto',[ApiMercadoLibre::class, 'pagosAuto']);
