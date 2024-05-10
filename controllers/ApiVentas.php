@@ -219,7 +219,7 @@ class ApiVentas
      
             **************************************************************
             <br>
-            GRACIAS POR SU VISITA, VUEVA PRONTO 
+            GRACIAS POR SU VISITA, VUELVA PRONTO 
             <br> 
             **************************************************************
            
