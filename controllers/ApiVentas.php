@@ -11,6 +11,7 @@ use Model\Cuota;
 use Model\PagoCuota;
 use Model\Producto;
 use Model\ProductosVenta;
+use Model\Usuario;
 use Model\Venta;
 use TCPDF;
 
@@ -21,18 +22,31 @@ class ApiVentas
 
         $id = $_GET['id'];
         $venta = Venta::find($id);
+        $vendedor = Usuario::find($venta->vendedor_id);
+        $importe = 0;
+        // echo "<pre>";
+        //     var_dump($venta);
+        //     echo "</pre>";
 
         $productos = ProductosVenta::whereArray(['venta_id' => $venta->id]);
-        // foreach($productos as $producto){
+        // echo "<pre>";
+        // var_dump($productos);
+        // echo "</pre>";
+        // foreach($productos as $producto_venta){
+        //     $producto = Producto::find($producto_venta->producto_id);
         //     echo "<pre>";
-        //     var_dump($producto);
+        //     $valor_unitario = number_format($producto_venta->precio);
+        //     var_dump($valor_unitario);
+        //     $total = number_format( $valor_unitario*$producto_venta->cantidad);
+
         //     echo "</pre>";
         // }
+
         // echo "<pre>";
         // var_dump($productos);
         // echo "</pre>";
         $pdf  = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-       $fecha = substr($venta->fecha, 0, -8);
+        $fecha = substr($venta->fecha, 0, -8);
 
 
         $pdf = new TCPDF('P', 'mm', array(80, 190), true, 'UTF-8', false);
@@ -42,6 +56,7 @@ class ApiVentas
         $pdf->setPrintFooter(false);
 
         // Agregar una página al PDF con la altura personalizada
+        $pdf->SetMargins(0, 0, 10, 0);
         $pdf->AddPage();
 
         // Agregar contenido al PDF
@@ -50,7 +65,7 @@ class ApiVentas
         $bloque_1 = <<<EOF
            
             <div  style="font-size:10px;width:160px; height:500px; text-align:center; font-size:8px margin-bottom:0;">
-                ELECRONICA EL TABLÓN
+                <strong style="font-size:11px">ELECRONICA EL TABLÓN</strong>
                 <br>
                 Nit: 891280005-1
                 <br>
@@ -59,32 +74,196 @@ class ApiVentas
                 Atendido por: ENAR ORDOÑEZ
                 <br>
                 EL TABLÓN DE GÓMEZ
-                <br>
-                <br>
-                *****************************************************
-               
-                <strong>Información General</strong>
-                <br>
-                <br>
-                Ticket No: $venta->codigo
-                <br>
-          
-            
-                Fecha Compra: $fecha
-                <br>
            
-                Cliente
-                <br>
-         
-                Nombre: $venta->nombre_cliente
-                <br>
-                Cedula: $venta->cedula_cliente
-                <br>
-                Celular: $venta->celular_cliente
-                <br>
-                Dirección: $venta->direccion_cliente
-                Vendedor: Bryan Piamba
+            </div>
+            EOF;
+         $pdf->writeHTML($bloque_1, false, false, false, false, '');
+         $bloque_salto = <<<EOF
+               
+         <span  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-bottom:0;">
+             ************************************************************
+            <br>
+         </span>
+     EOF;
 
+         $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+         $pdf->write1DBarcode($venta->codigo, 'C39', 34, '', '', 7, 0.3);
+         $bloque_2 = <<<EOF
+         
+                <div  style="font-size:10px;width:160px; height:500px; text-align:left; font-size:8px margin-bottom:0;"> 
+                
+               
+                    Ticket No: $venta->codigo  
+                    <br>
+                     Fecha : $fecha
+                   
+                    <br>
+                    Cliente: $venta->nombre_cliente
+                    <br>
+                    Cedula No: <span style="font-size:7px">$venta->cedula_cliente </span> 
+                    <br>
+                     Celular <span style="font-size:7px">$venta->celular_cliente </span> 
+            
+                  
+                 
+                    <br>
+                    Dirección: $venta->direccion_cliente
+                    <br>
+                    Vendedor: $vendedor->nombre
+         
+            </div>    
+               
+
+        EOF;
+
+        $pdf->writeHTML($bloque_2, false, false, false, false, '');
+
+        $bloque_salto = <<<EOF
+               
+        <div  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-bottom:0;">
+            ************************************************************
+            <br>
+            <strong>Productos</strong>
+           
+           
+        </div>
+    EOF;
+        $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+
+        foreach ($productos as $producto_venta) {
+            // $total_producto = number_format($producto['precio_producto']*$producto['cantidad'],2);
+            // $valor_unitario = number_format($producto['precio_producto'],2);
+            // $description = substr($producto['descripcion'], 0 , 15);
+
+            $valor_unitario = number_format($producto_venta->precio);
+            $total = number_format($producto_venta->precio * $producto_venta->cantidad);
+
+            $producto = Producto::find($producto_venta->producto_id);
+            $importe = $importe + $producto->precio_venta * $producto_venta->cantidad; //aqui calculamos el valor al precio original (sin descuetno)
+
+
+            $bloque_productos = <<<EOF
+      
+        <div  style="font-size:10px;width:160px; text-align:left; font-size:8px">
+       
+            {$producto->nombre}  : {$valor_unitario}X{$producto_venta->cantidad} = {$total}         
+        </div>
+
+
+    EOF;
+
+            $pdf->writeHTML($bloque_productos, false, false, false, false, '');
+        }
+        $bloque_salto = <<<EOF
+               
+        <div  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-bottom:0;">
+             
+            ************************************************************
+    
+        </div>
+    EOF;
+        $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+
+
+        if ($venta->metodo_pago == 1) {
+            $descuento = number_format($importe - $venta->total_factura);
+            $importe = number_format($importe);
+            $total = number_format($venta->total_factura);
+            $bloque_correo = <<<EOF
+            
+                <div  style="font-size:10px;width:160px; text-align:right; font-size:8px margin-bottom:0;">
+                    <strong>Metodo de pago </strong> Efectivo  
+                   
+                    <br>
+                    <strong>Importe:</strong> $importe
+                    <br>
+                    <strong>Descuento :</strong> {$venta->descuento}% = {$descuento}
+                    <br>
+                 
+                        <strong style="font-size:9px">Total:</strong> $total
+                 
+                 
+                    
+                </div>
+        EOF;
+            $pdf->writeHTML($bloque_correo, false, false, false, false, '');
+        } else {
+            $descuento = number_format($importe - $venta->total_factura);
+            $importe = number_format($importe);
+            $total = number_format($venta->total_factura);
+            $saldo = number_format($venta->total_factura - $venta->recaudo);
+            $recaudo = number_format($venta->recaudo);
+            $bloque_correo = <<<EOF
+            
+                <div  style="font-size:10px;width:160px; text-align:right; font-size:8px margin-bottom:0;">
+                    <strong>Metodo de pago </strong> Credito  
+                    <br>
+                    <br>
+                    <strong>Importe:</strong> $importe
+                    <br>
+                    <strong>Descuento :</strong> {$venta->descuento}% = {$descuento}
+                    <br>
+                    <strong>Total:</strong> $total
+                    <br>
+                    <strong>Abono:</strong> $recaudo
+                    <br>
+                    <strong>Saldo Pendiente:</strong> $saldo
+                </div>
+            EOF;
+            $pdf->writeHTML($bloque_correo, false, false, false, false, '');
+        }
+       
+        $bloque_salto = <<<EOF
+               
+        <span  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-left:0;">
+     
+            **************************************************************
+            <br>
+            GRACIAS POR SU VISITA, VUEVA PRONTO 
+            <br> 
+            **************************************************************
+           
+        </span>
+    EOF;
+    $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+            
+             
+        $garantias = <<<EOF
+       
+
+            <div  style="font-size:4px; width:160px; height:500px; text-align:center; font-size:6px margin-bottom:0;">
+         
+            
+        
+            <span>
+                <strong style="font-size:8px">POLÍTICAS DE GARANTÍA</strong>
+            </span>
+            <br>
+            <span >
+                -NO HAY CAMBIOS DE MERCANCIA NI DEVOLUCIÓN DE DINERO 
+            </span> 
+            <br>
+            <span >
+                -LOS EQUIPOS (CELULARES) ADQUIRIDOS EN NUESTRA TIENDA CUENTAN CON 3 MESES DE GARANTÍA
+            </span> 
+            <br>
+            <span >
+                -PRODUCTOS NACIONALES 1 AÑO DE GARANTÍA CON LAS MARCAS
+            </span> 
+            <br>
+            <br>
+            <span>
+            <strong style="font-size:8px">FUERA DE GARANTÍA</strong>
+     
+            <br>
+            <span>
+                -EQUIPOS APAGADOS, GOLPEADOS, MOJADOS - CON DAÑO FÍSICO, PUERTOS DE CARGA, TÁCTIL, PUERTO 3.6, MICROFONO, ALTAVOCES Y BOTONES
+            </span> 
+            <br>
+            <span >
+            ACCESORIOS TAMPOCO CUENTAN CON GARANTÍA
+            </span> 
+                
                 
               
             </div>    
@@ -92,20 +271,10 @@ class ApiVentas
 
         EOF;
 
-        $pdf->writeHTML($bloque_1, false, false, false, false, '');
+        $pdf->writeHTML($garantias, false, false, false, false, '');
 
-        $bloque_salto = <<<EOF
-               
-        <div  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-bottom:0;">
-            <br>
-            *****************************************************
-            <strong>Productos</strong>
-           
-           
-        </div>
-    EOF;
 
-    $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+
 
 
         $pdf->Output('example_001.pdf', 'I');
