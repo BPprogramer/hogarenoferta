@@ -76,9 +76,9 @@ class ApiInicio{
         
         foreach($ventas as $venta){
             $total = $total + $venta->recaudo;
-            if($venta->estado==1){
+            // if($venta->estado==1){
                 $costo = $costo + $venta->costo;
-            }
+            // }
         }
 
         $ganancia = $total - $costo;

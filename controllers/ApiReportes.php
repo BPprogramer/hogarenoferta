@@ -34,9 +34,9 @@ class ApiReportes{
             if( (strtotime($venta->fecha) >= strtotime($fecha))){
                
                 $total = $total+ $venta->recaudo;
-                if($venta->estado==1){
+                // if($venta->estado==1){
                     $costo = $costo + $venta->costo;
-                }
+                // }
                
               
             }
