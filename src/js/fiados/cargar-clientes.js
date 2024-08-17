@@ -20,6 +20,8 @@
             try {
                 const respuesta = await fetch(`${location.origin}/api/clientes-ventas`);
                 const resultado =  await respuesta.json();
+
+                console.log(resultado)
                
                 // llenarPrimerOption(selectCategorias);
                 const opcionDisabled =   document.createElement('OPTION');
