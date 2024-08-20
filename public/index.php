@@ -135,6 +135,7 @@ $router->post('/api/editar-venta',[ApiVentas::class, 'editar']);
 $router->post('/api/venta/eliminar',[ApiVentas::class, 'eliminar']);
 $router->get('/api/productos-ventas',[ApiVentas::class, 'productos']);
 $router->get('/api/clientes-ventas',[ApiVentas::class, 'clientes']);
+$router->get('/api/clientes-ventas-fiadas',[ApiVentas::class, 'clientesFiados']);
 $router->get('/api/codigo-venta',[ApiVentas::class, 'codigoVenta']);
 
 $router->get('/api/imprimir-venta',[ApiVentas::class, 'imprimirVenta']);

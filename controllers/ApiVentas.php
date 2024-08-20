@@ -770,11 +770,42 @@ class ApiVentas
         // }
 
         
-
-   
    
         echo json_encode( $clientes_all );
     }
+    
+    public static function clientesFiados(){
+         $clientes_all = Cliente::all();
+     
+        $clientes = [];
+       
+        foreach( $clientes_all as $cliente){
+            $fiados= PagoCuota::toDoJoin('ventas','id','venta_id','cliente_id',$cliente->id);
+          
+          
+          
+            if(!empty($fiados)){
+                // echo json_encode( $fiados );
+                // return ;
+                if($fiados[0]->total!=$fiados[0]->recaudo){
+                    $clientes[]  =  $cliente;
+                }
+              
+            
+             
+            }
+          
+            // echo json_encode(['pagos_cuotas'=>$pagos_cuotas, 'fiados'=>$fiados]);
+ 
+        }
+
+        
+        echo json_encode( $clientes );
+
+        
+   
+    }
+
     public static function codigoVenta()
     {
         $venta = Venta::get(1);

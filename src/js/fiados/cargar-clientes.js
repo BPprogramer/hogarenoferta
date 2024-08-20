@@ -18,7 +18,7 @@
             
             
             try {
-                const respuesta = await fetch(`${location.origin}/api/clientes-ventas`);
+                const respuesta = await fetch(`${location.origin}/api/clientes-ventas-fiadas`);
                 const resultado =  await respuesta.json();
 
                 console.log(resultado)
@@ -49,7 +49,7 @@
                     theme: 'bootstrap4'
                 })
             } catch (error) {
-                
+                console.log(error)
             }
             $('#selectProductos').select2()
             $('.select2bs4').select2({
