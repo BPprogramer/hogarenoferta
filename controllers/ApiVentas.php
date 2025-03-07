@@ -65,15 +65,15 @@ class ApiVentas
         $bloque_1 = <<<EOF
            
             <div  style="font-size:10px;width:160px; height:500px; text-align:center; font-size:8px margin-bottom:0;">
-                <strong style="font-size:11px">ELECRONICA EL TABLÓN</strong>
+                <strong style="font-size:11px">DISTRIHOGAR EL TABLÓN</strong>
                 <br>
-                Nit: 891280005-1
+                Nit: 1087645922-1
                 <br>
-                Cel: 3122650681
+                Cel: 3216196607
                 <br>
-                Atendido por: ENAR ORDOÑEZ
+                Atendido por: $vendedor->nombre
                 <br>
-                EL TABLÓN DE GÓMEZ
+                EL TABLON DE GÓMEZ BARRIO CENTRAL
            
             </div>
             EOF;
@@ -236,33 +236,18 @@ class ApiVentas
             
         
             <span>
-                <strong style="font-size:8px">POLÍTICAS DE GARANTÍA</strong>
+                <strong style="font-size:8px">PARA TENER EN CUENTA</strong>
             </span>
             <br>
             <span >
-                -NO HAY CAMBIOS DE MERCANCIA NI DEVOLUCIÓN DE DINERO 
+                NO HAY CAMBIOS DE MERCANCIA NI DEVOLUCIÓN DE DINERO 
             </span> 
             <br>
             <span >
-                -LOS EQUIPOS (CELULARES) ADQUIRIDOS EN NUESTRA TIENDA CUENTAN CON 3 MESES DE GARANTÍA
+                DESPUES DE SALIR DE NUESTRO ALMACEN
             </span> 
             <br>
-            <span >
-                -PRODUCTOS NACIONALES 1 AÑO DE GARANTÍA CON LAS MARCAS
-            </span> 
-            <br>
-            <br>
-            <span>
-            <strong style="font-size:8px">FUERA DE GARANTÍA</strong>
-     
-            <br>
-            <span>
-                -EQUIPOS APAGADOS, GOLPEADOS, MOJADOS - CON DAÑO FÍSICO, PUERTOS DE CARGA, TÁCTIL, PUERTO 3.6, MICROFONO, ALTAVOCES Y BOTONES
-            </span> 
-            <br>
-            <span >
-            ACCESORIOS TAMPOCO CUENTAN CON GARANTÍA
-            </span> 
+          
                 
                 
               

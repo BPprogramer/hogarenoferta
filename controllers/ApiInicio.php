@@ -71,14 +71,17 @@ class ApiInicio{
         $ventas = Venta::all();
 
         $total = 0;
-        $costo = 0;
+        $costo = 0; //costos de todas las ventas 
+  
         
         
         foreach($ventas as $venta){
             $total = $total + $venta->recaudo;
-            // if($venta->estado==1){
-                $costo = $costo + $venta->costo;
+            // if($venta->estado==0){
+            //     $costo_fiados = $costo + $venta->costo;
             // }
+
+            $costo = $costo + $venta->costo;
         }
 
         $ganancia = $total - $costo;
