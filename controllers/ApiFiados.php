@@ -12,7 +12,7 @@ use Model\ProductosVenta;
     class ApiFiados{
         public static function pagosCuotas(){
    
-            if(!is_admin()){
+            if(!is_auth()){
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
                 return;
             }
@@ -38,7 +38,7 @@ use Model\ProductosVenta;
         }
 
         public static function productosFiados(){
-            if(!is_admin()){
+            if(!is_auth()){
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
                 return;
             } 
@@ -63,7 +63,7 @@ use Model\ProductosVenta;
         }
 
         public static function eliminarPago(){
-            if(!is_admin()){
+            if(!is_auth()){
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
                 return;
             } 
@@ -116,7 +116,7 @@ use Model\ProductosVenta;
         }
 
         public static function pagar(){
-            if(!is_admin()){
+            if(!is_auth()){
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
                 return;
             } 

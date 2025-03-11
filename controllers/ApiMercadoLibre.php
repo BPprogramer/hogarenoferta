@@ -71,7 +71,7 @@ class ApiMercadoLibre
 
     public static function pagosAuto()
     {
-        if (!is_admin()) {
+        if (!is_auth()) {
             echo json_encode(['type' => 'error', 'msg' => 'Hubo un error, porfavor intente nuevamente']);
             return;
         }

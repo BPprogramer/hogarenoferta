@@ -454,7 +454,7 @@ class ApiVentas
     {
 
 
-        if (!is_admin()) {
+        if (!is_auth()) {
             echo json_encode(['type' => 'error', 'msg' => 'Hubo un error, porfavor intente nuevamente']);
             return;
         }

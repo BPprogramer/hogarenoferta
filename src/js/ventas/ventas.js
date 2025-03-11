@@ -4,8 +4,10 @@
         let tablaVentas;
     
         $('#tabla').on('click', '#editar', function(e){
+       
+          
             id=e.currentTarget.dataset.ventaId;
-         
+
     
             revisarPagosAsociados(id);
 
@@ -14,7 +16,7 @@
         })
         $('#tabla').on('click', '#eliminar', function(e){
             const ventaId = e.currentTarget.dataset.ventaId;
-            console.log(ventaId)
+         
             alertaEliminarVenta(ventaId,e);
         })
         $('#tabla').on('click', '#imprimir', function(e){
@@ -42,8 +44,9 @@
     
 
         async function revisarPagosAsociados(id){
-    
+            
             const datos = new FormData();
+      
             datos.append('id', id);
             const url = `${location.origin}/api/revisar-venta`;
             try {
@@ -51,7 +54,7 @@
                     method:'POST',
                     body:datos
                  })
-      
+       
                  const resultado = await respuesta.json();
           
                  eliminarToastAnterior();
@@ -110,7 +113,7 @@
                     method: 'POST'
                 })
                 const resultado = await respuesta.json();
-                console.log(resultado)
+            
          
                 
                 eliminarToastAnterior();

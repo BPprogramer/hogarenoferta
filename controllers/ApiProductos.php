@@ -112,53 +112,42 @@ class ApiProductos
     public static function productos()
     {
         $productos = Producto::all();
-        $i = 0;
-        $datoJson = '{
-             "data": [';
-        foreach ($productos as $key => $producto) {
-            $i++;
+        $data = []; // Array para almacenar los datos de los productos
 
-            $acciones = "<div class='d-flex justify-content-center' >";
-            $acciones .= "<button data-producto-id ='" . $producto->id . "' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
-            $acciones .= "<button data-producto-id ='" . $producto->id . "' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>";
-            $acciones .= "<button data-producto-id ='" . $producto->id . "' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
+        foreach ($productos as $key => $producto) {
+            // Generar las acciones (botones de Editar, Ver, Eliminar)
+            $acciones = "<div class='d-flex justify-content-center'>";
+            $acciones .= "<button data-producto-id='" . $producto->id . "' id='editar' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
+          /*   $acciones .= "<button data-producto-id='" . $producto->id . "' id='info' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>"; */
+            $acciones .= "<button data-producto-id='" . $producto->id . "' id='eliminar' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash'></i></button>";
             $acciones .= "</div>";
 
-
-
-            $stock = '';
+            // Generar el stock (botón de agregar stock)
+            $stock = "<div class='d-flex justify-content-center'>";
             if ($producto->stock <= $producto->stock_minimo) {
-                $stock = "<div class='d-flex justify-content-center' >";
-                $stock .= "<button data-producto-id ='" . $producto->id . "' id='agregar_stock'  type='button' class='btn  w-65 btn-inline btn-danger btn-sm ' style='min-width:70px'>" . $producto->stock . "</button>";
-                $stock .= "</div >";
+                $stock .= "<button data-producto-id='" . $producto->id . "' id='agregar_stock' type='button' class='btn w-65 btn-inline btn-danger btn-sm' style='min-width:70px'>" . $producto->stock . "</button>";
             } else {
-                $stock = "<div class='d-flex justify-content-center'>";
-                $stock .= "<button data-producto-id ='" . $producto->id . "' id='agregar_stock'  type='button' class='btn w-65 btn-inline bg-success text-white btn-sm' style='min-width:70px'>" . $producto->stock . "</button>";
-                $stock .= "</div >";
+                $stock .= "<button data-producto-id='" . $producto->id . "' id='agregar_stock' type='button' class='btn w-65 btn-inline bg-success text-white btn-sm' style='min-width:70px'>" . $producto->stock . "</button>";
             }
+            $stock .= "</div>";
 
+            // Asegurarse de que el código no sea nulo
+            $codigo = $producto->codigo ? $producto->codigo : "";
 
-            if (!$producto->codigo) {
-                $producto->codigo = "";
-            }
-
-
-            $datoJson .= '[
-                             "' . $i . '",
-                             "' . $producto->codigo . '",
-                             "' . $producto->nombre . '",
-                             "' . $stock . '",
-                             "' . number_format($producto->precio_compra) . '",
-                             "' . number_format($producto->precio_venta) . '",
-                             "' . $acciones . '"
-                     ]';
-            if ($key != count($productos) - 1) {
-                $datoJson .= ",";
-            }
+            // Agregar los datos del producto al array
+            $data[] = [
+                $key + 1, // Índice
+                $codigo, // Código del producto
+                $producto->nombre, // Nombre del producto
+                $stock, // Stock (HTML)
+                number_format($producto->precio_compra), // Precio de compra formateado
+                number_format($producto->precio_venta), // Precio de venta formateado
+                $acciones // Acciones (HTML)
+            ];
         }
 
-        $datoJson .=  ']}';
-
+        // Generar el JSON final
+        $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
 
         echo $datoJson;
     }
@@ -178,53 +167,44 @@ class ApiProductos
 
     public static function avastecimiento()
     {
+        // Obtener todos los productos
         $productos_todos = Producto::all();
-        $productos = array_filter($productos_todos, function($producto) {
-            // Asegurarse de que stock_minimo sea positivo usando abs()
-            $stock_minimo = abs($producto->stock_minimo);
-        
-            // Comparar el stock con el stock mínimo (siempre positivo)
-            if ($producto->stock <= $stock_minimo) {
-                return $producto;
-            }
-        });
-        
-        $i=0;
-        $datoJson = '{
-         "data": [';
-             foreach($productos as $producto){
-                $i++;
-
-                $proveedor = Proveedor::find($producto->proveedor_id);
-
-                $stock = "<div class='d-flex justify-content-center' >";
-                $stock .= "<button data-producto-id ='" . $producto->id . "' id='agregar_stock'  type='button' class='btn  w-65 btn-inline btn-danger btn-sm ' style='min-width:70px'>" . $producto->stock . "</button>";
-                $stock .= "</div >";
-
-                 
-
-               
-                 
-                 $datoJson.= '[
-                        "'.$i.'",
-                        "'.$producto->nombre.'",
-                        "'.$stock.'",
-                      
-                      
-                        "'.$producto->stock_minimo.'",
-                        "'.number_format($producto->precio_compra).'",
-                        "'.$proveedor->nombre.'",
-                        "'.$proveedor->celular.'"
-                 ]';
-                 if($i!= count($productos)){
-                     $datoJson.=",";
-                 }
-             }
-
-
-     
     
-         $datoJson.=  ']}';
+        // Filtrar productos con stock menor o igual al stock mínimo (usando valor absoluto)
+        $productos = array_filter($productos_todos, function ($producto) {
+            $stock_minimo = abs($producto->stock_minimo); // Asegurar que el stock mínimo sea positivo
+            return $producto->stock <= $stock_minimo; // Retornar productos que cumplan la condición
+        });
+    
+        // Array para almacenar los datos de los productos filtrados
+        $data = [];
+    
+        // Recorrer los productos filtrados
+        foreach ($productos as $producto) {
+            // Obtener el proveedor asociado al producto
+            $proveedor = Proveedor::find($producto->proveedor_id);
+    
+            // Generar el HTML para el stock (botón de agregar stock)
+            $stock = "<div class='d-flex justify-content-center'>";
+            $stock .= "<button data-producto-id='" . $producto->id . "' id='agregar_stock' type='button' class='btn w-65 btn-inline btn-danger btn-sm' style='min-width:70px'>" . $producto->stock . "</button>";
+            $stock .= "</div>";
+    
+            // Agregar los datos del producto al array
+            $data[] = [
+                count($data) + 1, // Índice (empezando desde 1)
+                $producto->nombre, // Nombre del producto
+                $stock, // Stock (HTML)
+                $producto->stock_minimo, // Stock mínimo
+                number_format($producto->precio_compra), // Precio de compra formateado
+                $proveedor->nombre, // Nombre del proveedor
+                $proveedor->celular // Celular del proveedor
+            ];
+        }
+    
+        // Generar el JSON final
+        $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
+    
+        // Imprimir el JSON
         echo $datoJson;
     }
 }

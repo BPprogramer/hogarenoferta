@@ -12,7 +12,7 @@ use Model\Producto;
 
 class ApiInicio{
     public static function index(){
-        if(!is_admin()){
+        if(!is_auth()){
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
             return;
         }

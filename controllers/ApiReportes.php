@@ -10,7 +10,7 @@ use Model\Producto;
 
 class ApiReportes{
     public static function info(){
-        if(!is_admin()){
+        if(!is_auth()){
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
             return;
         }
@@ -102,7 +102,7 @@ class ApiReportes{
 
 // class ApiReportes{
 //     public static function info(){
-//         if(!is_admin()){
+//         if(!is_auth()){
 //             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
 //             return;
 //         }
