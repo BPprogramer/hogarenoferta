@@ -6,7 +6,7 @@ use MVC\Router;
     class ProductosVentasController{
         public static function index(Router $router){
             session_start();
-            if(!is_auth()){
+            if(!is_auth() || $_SESSION['roll']!=1){
                 header('Location:/login');
             }
         

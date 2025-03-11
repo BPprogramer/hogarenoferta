@@ -18,7 +18,7 @@
         }
         public static function reporte(Router $router){
       
-            if(!is_auth()){
+            if(!is_auth() || $_SESSION['roll']!=1){
                 header('Location:/login');
             }
             

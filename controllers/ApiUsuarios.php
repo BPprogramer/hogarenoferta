@@ -207,7 +207,7 @@ use Model\Usuario;
                     $_SESSION['nombre'] = $usuario->nombre;
                  
                     $_SESSION['email'] = $usuario->email;
-                    $_SESSION['admin'] = $usuario->roll == 1 ? true: false;
+                    $_SESSION['roll'] = $usuario->roll;
                     echo json_encode(['type'=>'success', 'msg'=>'logueado']);
                     return;
                     
