@@ -9,7 +9,7 @@ class CategoriasController {
 
     public static function index(Router $router){
      
-        if(!is_auth() || $_SESSION['roll'] |=1){
+        if(!is_auth() || $_SESSION['roll'] !=1){
             header('Location:/login');
         }
         $router->render('categorias/index', [
