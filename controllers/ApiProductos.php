@@ -120,7 +120,7 @@ class ApiProductos
 
             $acciones = "<div class='d-flex justify-content-center' >";
             $acciones .= "<button data-producto-id ='" . $producto->id . "' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
-            $acciones .= "<button data-producto-id ='" . $producto->id . "' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>";
+          /*   $acciones .= "<button data-producto-id ='" . $producto->id . "' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>"; */
             $acciones .= "<button data-producto-id ='" . $producto->id . "' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
             $acciones .= "</div>";
 
@@ -172,8 +172,8 @@ class ApiProductos
             return;
         }
 
-        $categoria = Producto::find($id);
-        echo json_encode($categoria);
+        $producto = Producto::find($id);
+        echo json_encode($producto);
     }
 
     public static function avastecimiento()
