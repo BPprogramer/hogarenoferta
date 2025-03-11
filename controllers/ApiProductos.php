@@ -179,11 +179,14 @@ class ApiProductos
     public static function avastecimiento()
     {
         $productos_todos = Producto::all();
-        $productos = array_filter($productos_todos, function($producto){
-            if($producto->stock <= $producto->stock_minimo ){
+        $productos = array_filter($productos_todos, function($producto) {
+            // Asegurarse de que stock_minimo sea positivo usando abs()
+            $stock_minimo = abs($producto->stock_minimo);
+        
+            // Comparar el stock con el stock mínimo (siempre positivo)
+            if ($producto->stock <= $stock_minimo) {
                 return $producto;
             }
-      
         });
         
         $i=0;
