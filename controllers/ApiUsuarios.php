@@ -13,11 +13,9 @@ use Model\Usuario;
           
             });
             
-            $i=0;
-            $datoJson = '{
-             "data": [';
-                 foreach($usuarios as $key=>$usuario){
-                    $i++;
+            $data =[];
+            foreach($usuarios as $key=>$usuario){
+             
 
                     $acciones = "<div class='d-flex justify-content-center' >";
                     $acciones .="<button data-usuario-id ='".$usuario->id."' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-user-pen'></i></button>";
@@ -46,24 +44,23 @@ use Model\Usuario;
                        
                          $roll = "Administrador";
                      }
+
+                     $data[]=[
+                        $key + 1, 
+                        $usuario->nombre,
+                        $usuario->email,
+                        $estado,
+                        $roll,
+                        $acciones
+                     ];
                    
                      
-                     $datoJson.= '[
-                             "'.$i.'",
-                             "'.$usuario->nombre.'",
-                             "'.$usuario->email.'",
-                          
-                          
-                             "'.$estado.'",
-                             "'.$roll.'",
-                             "'.$acciones.'"
-                     ]';
-                     if($key != count($usuarios)-1){
-                         $datoJson.=",";
-                     }
-                 }
-       
-             $datoJson.=  ']}';
+                     
+                 
+                }    
+             // Generar el JSON final
+            $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
+
             echo $datoJson;
         }
         

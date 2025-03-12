@@ -9,62 +9,48 @@ use Model\Ingreso;
 use Model\Usuario;
 
     class ApiCajas {
+
         public static function cajas(){
             $cajas = Caja::all();
+            $data = [];
+            foreach($cajas as $key=>$caja){
+                $usuario = Usuario::where('id', $caja->vendedor_id);
 
-            $i=0;
-            $datoJson = '{
-             "data": [';
-                 foreach($cajas as $key=>$caja){
-                    $usuario = Usuario::where('id', $caja->vendedor_id);
-                 
-                    $i++;
+                $acciones = "<div class='d-flex justify-content-float' >";
+                $acciones .="<button data-caja-id ='".$caja->id."' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Info</span><i class='fas fa-search'></i></button>";
+                if($caja->numero_transacciones==0 && $caja->estado==0){
+                    $acciones .="<button data-caja-id ='".$caja->id."' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
+                    $acciones .="<button data-caja-id ='".$caja->id."' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
+                }
+                $acciones .="</div>";
 
-                    $acciones = "<div class='d-flex justify-content-float' >";
-                    $acciones .="<button data-caja-id ='".$caja->id."' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Info</span><i class='fas fa-search'></i></button>";
-                    if($caja->numero_transacciones==0 && $caja->estado==0){
-                        $acciones .="<button data-caja-id ='".$caja->id."' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
-                        $acciones .="<button data-caja-id ='".$caja->id."' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
-                    }
-                   
+                $estado = '';
+                if($caja->estado == 0){
                   
-                    $acciones .="</div>";
- 
-                  
- 
-                    $estado = '';
-                     if($caja->estado == 0){
-                       
-                        $estado = "<div class='d-flex justify-content-center'>";
-                  
-                        $estado .= "<button type='button' data-caja-id ='".$caja->id."' id='cerrar'  class='btn w-75 btn-inline bg-azul text-white btn-sm toolMio' style='min-width:70px'><span class='toolMio-text'>Cerrar</span>Abierta</button>";
-                        $estado .= "</div >";
-                     }else{
-                        $estado = "<div class='d-flex justify-content-center' >";
-                        $estado .= "<button  type='button' class='btn  w-75 btn-inline btn-secondary btn-sm ' style='min-width:70px'>Cerrada</button>";
-                        $estado .= "</div >";
-                     }
+                   $estado = "<div class='d-flex justify-content-center'>";
+             
+                   $estado .= "<button type='button' data-caja-id ='".$caja->id."' id='cerrar'  class='btn w-75 btn-inline bg-azul text-white btn-sm toolMio' style='min-width:70px'><span class='toolMio-text'>Cerrar</span>Abierta</button>";
+                   $estado .= "</div >";
+                }else{
+                   $estado = "<div class='d-flex justify-content-center' >";
+                   $estado .= "<button  type='button' class='btn  w-75 btn-inline btn-secondary btn-sm ' style='min-width:70px'>Cerrada</button>";
+                   $estado .= "</div >";
+                }
+                $data[] = [
+                    $key + 1, // Índice
+                    $usuario->nombre, // Código del producto
+                    "$".number_format($caja->efectivo_apertura),
+                    "$".number_format($caja->efectivo_cierre),
+                    $estado,
+                    $acciones // Acciones (HTML)
+                ];
 
-                     $datoJson.= '[
-                             "'.$i.'",
-                             "'.$usuario->nombre.'",
-                             "$'.number_format($caja->efectivo_apertura).'",
-                             "'.number_format($caja->efectivo_cierre).'",
-                          
-                          
-                             "'.$estado.'",
-     
-                             "'.$acciones.'"
-                     ]';
-                     if($key != count($cajas)-1){
-                         $datoJson.=",";
-                     }
-                 }
-       
-             $datoJson.=  ']}';
+            }
+            $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
+
             echo $datoJson;
-            
         }
+      
         public static function caja(){
             $id = $_GET['id'];
             $id = filter_var($id, FILTER_VALIDATE_INT);

@@ -10,8 +10,7 @@
             
            
             $i=0;
-            $datoJson = '{
-             "data": [';
+                $data = [];
                  foreach($categorias as $key=>$categoria){
                     $i++;
 
@@ -20,21 +19,18 @@
                     $acciones .="<button data-categoria-id ='".$categoria->id."' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul  mx-2  text-white toolMio'><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash'></i></button>";
                     $acciones .="</div>";
 
-                   
+                    $data[] = [
+                        $key + 1,
+                        $categoria->categoria,
+                        $acciones
+                    ];
                 
-                     $datoJson.= '[
-                             "'.$i.'",
-                             "'.$categoria->categoria.'",
-                        
-                             "'.$acciones.'"
-                     ]';
-                     if($key != count($categorias)-1){
-                         $datoJson.=",";
-                     }
+                    
                  }
        
-             $datoJson.=  ']}';
-             echo $datoJson;
+                 $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
+
+                 echo $datoJson;
             
         }
 

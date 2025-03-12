@@ -12,8 +12,8 @@ use Model\Cliente;
             
            
             $i=0;
-            $datoJson = '{
-             "data": [';
+            $data = [];
+        
                  foreach($clientes as $key=>$cliente){
                     $i++;
 
@@ -26,26 +26,23 @@ use Model\Cliente;
                     $deuda .= "<button type='button' class='btn  w-75 btn-inline btn-secondary btn-sm ' style='min-width:70px'>Calcular</span><i class='fas fa-math'></i></button>";
                     $deuda .= "</div >";
 
+                    $data[] = [
+                        $key+1,
+                       $cliente->nombre,
+                        $cliente->cedula,
+                        $cliente->celular,
+                        $cliente->direccion,
+                        $cliente->email,
+                        $deuda,
                    
+                        $acciones
+                    ];
                 
-                     $datoJson.= '[
-                             "'.$i.'",
-                             "'.$cliente->nombre.'",
-                             "'.$cliente->cedula.'",
-                             "'.$cliente->celular.'",
-                             "'.$cliente->direccion.'",
-                             "'.$cliente->email.'",
-                             "'.$deuda.'",
-                        
-                             "'.$acciones.'"
-                     ]';
-                     if($key != count($clientes)-1){
-                         $datoJson.=",";
-                     }
-                 }
-       
-             $datoJson.=  ']}';
-             echo $datoJson;
+                    }
+
+                $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
+
+                echo $datoJson;
             
         }
 
