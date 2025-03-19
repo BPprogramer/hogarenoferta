@@ -113,15 +113,6 @@ class ApiInicio{
 
         ];
 
-   
-
-
-
-        
-
-
-        
-
         
   
          echo json_encode($informacion);

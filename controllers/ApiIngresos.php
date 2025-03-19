@@ -8,66 +8,48 @@ use Model\Usuario;
 
 class ApiIngresos{
 
-    public static function ingresos(){
-        $ingresos = Ingreso::all();
+    public static function ingresos()
+{
+    $ingresos = Ingreso::all();
+    $data = [];
 
+    foreach ($ingresos as $key => $ingreso) {
+        $usuario = Usuario::find($ingreso->usuario_id);
+        $caja = Caja::find($ingreso->caja_id);
 
-        $i=0;
-        $datoJson = '{
-         "data": [';
-             foreach($ingresos as $key=>$ingreso){
-                $usuario = Usuario::where('id', $ingreso->usuario_id);
-                $caja = Caja::where('id', $ingreso->caja_id);
-                $i++;
+        // Acciones disponibles
+        $acciones = "<div class='d-flex justify-content-center'>";
+        if ($ingreso->estado == 1 && $caja && $caja->estado == 0) {
+            $acciones .= "<button data-ingreso-id='" . $ingreso->id . "' id='editar' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
+            $acciones .= "<button data-ingreso-id='" . $ingreso->id . "' id='eliminar' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Anular</span><i class='fas fa-trash'></i></button>";
+        }
+        $acciones .= "</div>";
 
-                $acciones = "<div class='d-flex justify-content-center' >";
-               
-                if($ingreso->estado==1 && $caja->estado == 0){
-                    $acciones .="<button data-ingreso-id ='".$ingreso->id."' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
-                    $acciones .="<button data-ingreso-id ='".$ingreso->id."' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Anular</span><i class='fas fa-trash' ></i></button>";
-                }else{
-                    $acciones .= "";
-                }
-               
-              
-                $acciones .="</div>";
+        // Estado del ingreso
+        $estado = "<div class='d-flex justify-content-center'>";
+        if ($ingreso->estado == 1) {
+            $estado .= "<button type='button' class='btn w-75 btn-inline bg-azul text-white btn-sm' style='min-width:70px'>Activo</button>";
+        } else {
+            $estado .= "<button type='button' class='btn w-75 btn-inline btn-secondary btn-sm' style='min-width:70px'>Anulado</button>";
+        }
+        $estado .= "</div>";
 
-              
-
-                $estado = '';
-                 if($ingreso->estado == 1){
-                   
-                    $estado = "<div class='d-flex justify-content-center'>";
-              
-                    $estado .= "<button type='button' data-ingreso-id ='' id='cerrar'  class='btn w-75 btn-inline bg-azul text-white btn-sm toolMio' style='min-width:70px'>Activo</button>";
-                    $estado .= "</div >";
-                 }else{
-                    $estado = "<div class='d-flex justify-content-center' >";
-                    $estado .= "<button  type='button' class='btn  w-75 btn-inline btn-secondary btn-sm ' style='min-width:70px'>Anulado</button>";
-                    $estado .= "</div >";
-                 }
-
-                 $datoJson.= '[
-                         "'.$i.'",
-                         "'.$usuario->nombre.'",
-                         "'.$ingreso->fecha.'",
-             
-                         "'.number_format($ingreso->ingreso).'",
-                      
-                         "'.$ingreso->descripcion.'", 
-                         "'.$estado.'",
- 
-                         "'.$acciones.'"
-                 ]';
-                 if($key != count($ingresos)-1){
-                     $datoJson.=",";
-                 }
-             }
-   
-         $datoJson.=  ']}';
-        echo $datoJson;
-        
+        // Agregar datos al array
+        $data[] = [
+            $key + 1, // Índice
+            $usuario ? $usuario->nombre : 'Desconocido', // Nombre del usuario
+            $ingreso->fecha, // Fecha del ingreso
+            number_format($ingreso->ingreso), // Monto del ingreso formateado
+            $ingreso->descripcion, // Descripción del ingreso
+            $estado, // Estado (HTML)
+            $acciones // Acciones (HTML)
+        ];
     }
+
+    // Generar el JSON
+    echo json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
+}
+
     public static function ingreso(){
         $id = $_GET['id'];
         $id = filter_var($id, FILTER_VALIDATE_INT);
