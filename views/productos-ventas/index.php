@@ -41,8 +41,10 @@
                                     <th>PRODUCTO</th>
                              
                                     <th>CANTIDAD</th>
-                                    <th>VALOR UNITARIO</th>
-                                    <th>TOTAL</th>
+                                    <th>PRECIO COMPRA</th>
+                                    <th>TOTAL COMPRA</th>
+                                    <th>PRECIO VENTA</th>
+                                    <th>TOTAL VENTA</th>
                                  
                                 </tr>
                             </thead>
