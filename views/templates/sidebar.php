@@ -91,13 +91,43 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
+        <!--    <li class="nav-item">
           <a href="/fiados" class="nav-link <?php echo pagina_actual('/fiados') ? 'active' : '' ?>">
             <i class="nav-icon fas fa-hand-holding-usd"></i>
             <p>
               Fiados
             </p>
           </a>
+        </li> -->
+
+        <li class="nav-item">
+          <a href="" class="nav-link <?php echo (pagina_actual('fiados') || pagina_actual('fiados')) ? 'active' : ''; ?>
+">
+            <i class="nav-icon fas fa-hand-holding-usd"></i>
+            <p>
+              Fiados
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/fiados" class="nav-link <?php echo pagina_actual('/fiados') ? 'active' : '' ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>
+                  Fiados
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/pagos" class="nav-link <?php echo pagina_actual('pagos') ? 'active' : '' ?>" style="<?php echo pagina_actual('pagos') ? 'background-color:white !important;' : '' ?>">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pagos</p>
+              </a>
+            </li>
+
+
+          </ul>
         </li>
 
 

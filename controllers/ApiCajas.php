@@ -38,6 +38,7 @@ use Model\Usuario;
                 }
                 $data[] = [
                     $key + 1, // Índice
+                    $caja->id+1000,
                     $usuario->nombre, // Código del producto
                     "$".number_format($caja->efectivo_apertura),
                     "$".number_format($caja->efectivo_cierre),

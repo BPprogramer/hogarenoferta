@@ -18,6 +18,7 @@ use Controllers\ApiProductos;
 use Controllers\ApiCategorias;
 use Controllers\ApiProveedores;
 use Controllers\ApiMercadoLibre;
+use Controllers\ApiPagos;
 use Controllers\CajasController;
 use Controllers\FiadosController;
 use Controllers\VentasController;
@@ -32,6 +33,7 @@ use Controllers\ProveedoresController;
 use Controllers\MercadoLibreController;
 use Controllers\TransaccionesController;
 use Controllers\AvastesimientoController;
+use Controllers\PagosController;
 use Controllers\ProductosVentasController;
 
 $router = new Router();
@@ -53,6 +55,7 @@ $router->get('/productos', [ProductosController::class, 'index']);
 $router->get('/proveedores', [ProveedoresController::class, 'index']);
 $router->get('/cajas',[CajasController::class, 'index']);
 $router->get('/fiados',[FiadosController::class, 'index']);
+$router->get('/pagos',[PagosController::class, 'index']);
 $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
 $router->get('/compras',[AvastesimientoController::class, 'index']);
@@ -164,6 +167,7 @@ $router->post('/api/caja/cerrar',[ApiCajas::class, 'cerrar']);
 
 $router->get('/api/pagos-cuotas',[ApiFiados::class, 'pagosCuotas']);
 // $router->get('/api/cuotas',[ApiFiados::class, 'cuotas']);
+$router->get('/api/pagos',[ApiPagos::class, 'pagos']);
 
 $router->get('/api/productos-fiados',[ApiFiados::class, 'productosFiados']);
 $router->post('/api/pagar',[ApiFiados::class, 'pagar']);

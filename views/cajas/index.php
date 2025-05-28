@@ -29,6 +29,7 @@
               <thead>
                 <tr>
                   <th>#</th>
+                  <th>No Caja</th>
                   <th>RESPONSABLE</th>
                   <th>EFECTIVO INICIAL</th>
                   <th>TOTAL RECAUDO</th>
