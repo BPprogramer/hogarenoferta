@@ -77,8 +77,8 @@ class ApiVentas
            
             </div>
             EOF;
-         $pdf->writeHTML($bloque_1, false, false, false, false, '');
-         $bloque_salto = <<<EOF
+        $pdf->writeHTML($bloque_1, false, false, false, false, '');
+        $bloque_salto = <<<EOF
                
          <span  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-bottom:0;">
              ************************************************************
@@ -86,9 +86,9 @@ class ApiVentas
          </span>
      EOF;
 
-         $pdf->writeHTML($bloque_salto, false, false, false, false, '');
-         $pdf->write1DBarcode($venta->codigo, 'C39', 34, '', '', 7, 0.3);
-         $bloque_2 = <<<EOF
+        $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+        $pdf->write1DBarcode($venta->codigo, 'C39', 34, '', '', 7, 0.3);
+        $bloque_2 = <<<EOF
          
                 <div  style="font-size:10px;width:160px; height:500px; text-align:left; font-size:8px margin-bottom:0;"> 
                 
@@ -212,7 +212,7 @@ class ApiVentas
             EOF;
             $pdf->writeHTML($bloque_correo, false, false, false, false, '');
         }
-       
+
         $bloque_salto = <<<EOF
                
         <span  style="font-size:10px;width:160px; text-align:center; font-size:8px margin-left:0;">
@@ -225,9 +225,9 @@ class ApiVentas
            
         </span>
     EOF;
-    $pdf->writeHTML($bloque_salto, false, false, false, false, '');
-            
-             
+        $pdf->writeHTML($bloque_salto, false, false, false, false, '');
+
+
         $garantias = <<<EOF
        
 
@@ -600,14 +600,10 @@ class ApiVentas
 
             if ($venta->metodo_pago == 2) {
 
-
                 $pago_cuotas = new PagoCuota();
-
                 $pago_cuotas->venta_id = $venta->id;
                 $pago_cuotas->cliente_id = $_POST['cliente_id'];
-                debuguear($pago_cuotas);
                 $resultado = $pago_cuotas->guardar();
-
                 if ($venta->recaudo != 0) {
                     $cuota = new Cuota();
                     $cuota->monto = $venta->recaudo;
@@ -615,6 +611,7 @@ class ApiVentas
                     $cuota->fecha_pago = $venta->fecha;
                     $cuota->numero_pago = $numero_pago;
                     $cuota->caja_id = $venta->caja_id;
+                    $cuota->cuota_inicial = 1;
                     $cuota->pago_cuotas_id = $resultado['id'];
                     $cuota->guardar();
                 }
@@ -732,64 +729,59 @@ class ApiVentas
     public static  function clientes()
     {
         $clientes_all = Cliente::all();
-        
+
         // $clientes = [];
-       
+
         // foreach( $clientes_all as $cliente){
         //     $fiados= PagoCuota::toDoJoin('ventas','id','venta_id','cliente_id',$cliente->id);
-          
-          
-          
+
+
+
         //     if(!empty($fiados)){
         //         // echo json_encode( $fiados );
         //         // return ;
         //         if($fiados[0]->total!=$fiados[0]->recaudo){
         //             $clientes[]  =  $cliente;
         //         }
-              
-            
-             
+
+
+
         //     }
-          
+
         //     // echo json_encode(['pagos_cuotas'=>$pagos_cuotas, 'fiados'=>$fiados]);
- 
+
         // }
 
-        
-   
-        echo json_encode( $clientes_all );
+
+
+        echo json_encode($clientes_all);
     }
-    
-    public static function clientesFiados(){
-         $clientes_all = Cliente::all();
-     
+
+    public static function clientesFiados()
+    {
+        $clientes_all = Cliente::all();
+
         $clientes = [];
-       
-        foreach( $clientes_all as $cliente){
-            $fiados= PagoCuota::toDoJoin('ventas','id','venta_id','cliente_id',$cliente->id);
-          
-          
-          
-            if(!empty($fiados)){
+
+        foreach ($clientes_all as $cliente) {
+            $fiados = PagoCuota::toDoJoin('ventas', 'id', 'venta_id', 'cliente_id', $cliente->id);
+
+
+
+            if (!empty($fiados)) {
                 // echo json_encode( $fiados );
                 // return ;
-                if($fiados[0]->total!=$fiados[0]->recaudo){
+                if ($fiados[0]->total != $fiados[0]->recaudo) {
                     $clientes[]  =  $cliente;
                 }
-              
-            
-             
             }
-          
+
             // echo json_encode(['pagos_cuotas'=>$pagos_cuotas, 'fiados'=>$fiados]);
- 
+
         }
 
-        
-        echo json_encode( $clientes );
 
-        
-   
+        echo json_encode($clientes);
     }
 
     public static function codigoVenta()
