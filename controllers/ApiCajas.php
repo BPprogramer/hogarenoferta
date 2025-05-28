@@ -160,7 +160,7 @@ use Model\Usuario;
             if($ventas){
                 foreach($ventas as $venta){
                     if($venta->metodo_pago==1){
-                        $total_ventas = $total_ventas + $venta->total;
+                        $total_ventas = $total_ventas + $venta->recaudo;
                     }
                  
                 }

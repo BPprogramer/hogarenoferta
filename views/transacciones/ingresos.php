@@ -32,6 +32,7 @@
                   <th>RESPONSABLE</th>
                   <th>FECHA</th>
                   <th>MONTO</th>
+                  <th>No CAJA</th>
                   <th>Descripcion</th>
                   <th>ESTADO</th>
                   <th class="text-center">Acciones</th>

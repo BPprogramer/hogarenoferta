@@ -52,6 +52,7 @@ class ApiEgresos
                 $usuario->nombre, // Código del producto
                 $egreso->fecha, // Nombre del producto
                 number_format($egreso->egreso), // Stock (HTML)
+                 $egreso->caja_id+1000,
                 $egreso->descripcion,
                 $estado, // Precio de venta formateado
                 $acciones // Acciones (HTML)

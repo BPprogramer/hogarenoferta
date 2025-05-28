@@ -18,7 +18,7 @@
               </div>
               <div class="col-4 d-flex justify-content-end">
                 <button type="button" id="registrar" class="btn bg-hover-azul text-white toolMio">
-                    Registrar Egreso
+                  Registrar Egreso
                 </button>
               </div>
             </div>
@@ -32,6 +32,7 @@
                   <th>RESPONSABLE</th>
                   <th>FECHA</th>
                   <th>MONTO</th>
+                  <th>No CAJA</th>
                   <th>Descripcion</th>
                   <th>ESTADO</th>
                   <th class="text-center">Acciones</th>
@@ -73,11 +74,11 @@
               </div>
               <div class="form-group col-md-12">
                 <label for="descripcion">Descripción</label>
-                <textarea class="form-control"   cols="30" rows="10" name="descripcion" id="descripcion" placeholder="ej: Para regresos"></textarea>
+                <textarea class="form-control" cols="30" rows="10" name="descripcion" id="descripcion" placeholder="ej: Para regresos"></textarea>
               </div>
-              
+
             </div>
-    
+
           </div>
 
 
@@ -102,4 +103,3 @@
 </div>
 
 <!-- Modal para actualizar stock -->
-
