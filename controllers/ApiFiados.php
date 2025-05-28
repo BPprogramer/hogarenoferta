@@ -212,11 +212,14 @@ use Model\ProductosVenta;
                             $cuota->saldo = $venta->total - $venta->recaudo;
                             $cuota->monto = $pago;
                         }
+
     
                         $caja->numero_transacciones = $caja->numero_transacciones + 1;
                         $venta->fecha = date('Y-m-d H:i:s');
-                        $venta->guardar();
-                        $cuota->guardar();
+                        $venta =$venta->guardar();
+                        $cuota->cuota_inicial=0;
+                        $cuota = $cuota->guardar();
+                   
                         $caja->guardar();
                     }
                  

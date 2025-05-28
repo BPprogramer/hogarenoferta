@@ -4,7 +4,7 @@ namespace Model;
 
 class  Cuota extends ActiveRecord {
     protected static $tabla = 'cuotas';
-    protected static $columnasDB = ['id','numero_pago', 'monto', 'saldo','fecha_pago', 'caja_id', 'pago_cuotas_id'];
+    protected static $columnasDB = ['id','numero_pago', 'monto', 'saldo','fecha_pago', 'caja_id', 'pago_cuotas_id', 'cuota_inicial'];
 
 
     public $id;
@@ -14,6 +14,8 @@ class  Cuota extends ActiveRecord {
     public $fecha_pago;
     public $caja_id;
     public $pago_cuotas_id;
+ 
+    public $cuota_inicial;
  
 
  
@@ -26,6 +28,7 @@ class  Cuota extends ActiveRecord {
         $this->fecha_pago = $args['fecha_pago'] ?? '';
         $this->caja_id = $args['caja_id'] ?? '';
         $this->pago_cuotas_id = $args['pago_cuotas_id'] ?? '';
+        $this->cuota_inicial = $args['cuota_inicial'] ?? 0;
     
     }
 

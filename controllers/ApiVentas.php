@@ -429,6 +429,7 @@ class ApiVentas
                     $cuota->monto = $venta->recaudo;
                     $cuota->saldo = $venta->total - $venta->recaudo;
                     $cuota->fecha_pago = $venta->fecha;
+                    $cuota->cuota_inicial = 1;
                     $cuota->numero_pago = $numero_pago;
                     $cuota->caja_id = $caja->id;
                     $cuota->pago_cuotas_id = $resultado['id'];
