@@ -310,7 +310,7 @@ class ApiVentas
                          "' . number_format($venta->total_factura) . '",
                          "' . number_format($venta->recaudo) . '",
                          "' . $estado . '",
-                    
+                          "' . $venta->caja_id + 1000 . '",
                          "' . $venta->fecha . '",
                          "' . $acciones . '"
                  ]';

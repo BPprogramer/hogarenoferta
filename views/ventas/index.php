@@ -34,6 +34,7 @@
                                     <th>RECUADO</th>
                            
                                     <th>ESTADO</th>
+                                    <th>No CAJA</th>
                                     <th>FECHA</th>
                                     <th class="">Acciones</th>
                                 </tr>
