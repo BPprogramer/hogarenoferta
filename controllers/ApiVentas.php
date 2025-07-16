@@ -67,13 +67,13 @@ class ApiVentas
             <div  style="font-size:10px;width:160px; height:500px; text-align:center; font-size:8px margin-bottom:0;">
                 <strong style="font-size:11px">FERROAGROPECUARIA CAMPOVIDA</strong>
                 <br>
-                Nit: 1087645922-1
+                Nit: 98395261-7
                 <br>
-                Cel: 3216196607
+                Cel: 3104624214, 3175881174
                 <br>
                 Atendido por: $vendedor->nombre
                 <br>
-                EL TABLON DE GÓMEZ BARRIO CENTRAL
+                VEREDA LA VICTORIA
            
             </div>
             EOF;
