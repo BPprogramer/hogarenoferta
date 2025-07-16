@@ -65,7 +65,7 @@ class ApiVentas
         $bloque_1 = <<<EOF
            
             <div  style="font-size:10px;width:160px; height:500px; text-align:center; font-size:8px margin-bottom:0;">
-                <strong style="font-size:11px">DISTRIHOGAR EL TABLÓN</strong>
+                <strong style="font-size:11px">FERROAGROPECUARIA CAMPOVIDA</strong>
                 <br>
                 Nit: 1087645922-1
                 <br>
