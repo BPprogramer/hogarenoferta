@@ -66,7 +66,7 @@
             if(isNaN(precio_compra) || isNaN(precio_venta)){
                 return;
             }
-            const porcentaje = (precio_venta*100)/precio_compra;
+            const porcentaje = ((precio_venta - precio_compra)*100)/precio_compra;
             porcentaje_venta.value = porcentaje.toFixed(2)
         }
 
