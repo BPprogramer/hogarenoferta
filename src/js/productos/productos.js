@@ -164,7 +164,7 @@
                 $('#tabla').DataTable().destroy();
             }
 
-            $('#tabla').DataTable({
+            tablaProductos = $('#tabla').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {

@@ -170,8 +170,9 @@
             if ($.fn.DataTable.isDataTable('#tabla')) {
                 $('#tabla').DataTable().destroy();
             }
+         
 
-            $('#tabla').DataTable({
+            tablaVentas = $('#tabla').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -179,6 +180,7 @@
                     type: 'GET'
                 },
                 responsive: true,
+
                 order: [[1, 'desc']],
                 language: {
                     "decimal": "",
@@ -198,6 +200,7 @@
                         "previous": "Anterior"
                     }
                 }
+            
             });
         }
 

@@ -53,7 +53,7 @@
                 $('#tabla').DataTable().destroy();
             }
 
-            $('#tabla').DataTable({
+            tablaUsuarios = $('#tabla').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
