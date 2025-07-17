@@ -92,6 +92,7 @@
                 })
                 const resultado = await respuesta.json();
               
+              
                 eliminarToastAnterior();
             
                 if(resultado.type=='error'){

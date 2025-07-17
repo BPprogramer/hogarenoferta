@@ -5,31 +5,37 @@ namespace Controllers;
 use DateTime;
 use Model\Caja;
 use Model\Cuota;
-
+use Model\Payment;
 use Model\Venta;
 use Model\ProductosVenta;
+use Model\Usuario;
 
 class ApiPagos
 {
     public static function pagos()
     {
-        $pagos = Cuota::all();
+        $payments = Payment::all();
 
 
         $data = []; // Array para almacenar los datos de los productos
 
-        foreach ($pagos as $key => $pago) {
+        foreach ($payments as $key => $payment) {
 
-            if (!$pago->cuota_inicial) {
+            $sale = Venta::find($payment->sale_id);
+
+
+            if ($payment->first_payment == 0) {
 
 
                 $data[] = [
                     $key + 1,
-                    $pago->numero_pago, // Código del producto
-                    number_format($pago->monto), // Nombre del producto
-                    number_format($pago->saldo), // Stock (HTML)
-                    $pago->caja_id + 1000, // Precio de compra formateado
-                    $pago->fecha_pago,
+                    $payment->payment_number,
+                    $sale->codigo,
+                    $payment->sale_box_id + 3000000,
+                    number_format($payment->payment_amount),
+                    number_format($payment->remaining_balance),
+
+                    $payment->date,
 
                 ];
             }
@@ -39,5 +45,30 @@ class ApiPagos
         $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
 
         echo $datoJson;
+    }
+
+    public static function pagosPorVenta()
+    {
+        session_start();
+        date_default_timezone_set('America/Bogota');
+        $venta_id = $_GET['venta_id'];
+
+        $venta_id = filter_var($venta_id, FILTER_VALIDATE_INT);
+
+        if (!$venta_id) {
+
+            echo json_encode(['type' => 'error', 'msg' => 'Hubo un error, Intenta nuevamente']);
+            return;
+        }
+        $payments  = Payment::whereAll('sale_id', $venta_id, 'id');
+        if (!$payments) {
+            echo json_encode(['type' => 'error', 'msg' => 'Esta venta no tienen nigun pago asociado']);
+            return;
+        }
+        foreach ($payments as $payment) {
+            $payment->responsible = Usuario::find($payment->user_id);
+        }
+        echo json_encode(['type' => 'success', 'data' => $payments]);
+        return;
     }
 }

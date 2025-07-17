@@ -3,17 +3,7 @@
     <div class="container-fluid">
 
         <div class="container-fluid mb-2 px-0" id="">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link color-texto active-nav" id="enlace-deudas" href="#">Deudas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link color-texto" id="enlace-pagos" href="#">Pagos</a>
-                </li>
-                <!--     <li class="nav-item">
-                <a class="nav-link color-texto" id="avanzado" href="#">Costos Extras</a>
-            </li> -->
-            </ul>
+
             <div class="row d-flex justify-content-between align-items-center px-3">
                 <div class="col-sm-5">
                     <div class="input-group m-2 ">
@@ -65,7 +55,7 @@
                             <tr>
                                 <th>Venta</th>
                                 <th>Total</th>
-                                <th>Abono</th>
+                                <th>Recaudo</th>
                                 <th>Deuda</th>
                                 <th>Estado</th>
                                 <th>Detalles</th>
@@ -85,56 +75,47 @@
 
 
         </div>
-        <div class="card card-info card-outline d-none" id="contenedor-pagos">
-            <div class="px-3">
-                <div class="row py-2 d-flex justify-content-between">
-                    <div class="col">
-                        <h3 class="">Pagos</h3>
-                    </div>
-                   <!--  <div class="col d-flex justify-content-end">
-                        <button type="button" id="registrar" class="btn bg-hover-azul text-white text-bold">
-                            VER TODO
+     
+    </div>
+</div>
 
-                        </button>
-                    </div> -->
-                </div>
+<div class="modal fade" id="modal-pagos">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-azul">
+                <h4 class="modal-title text-white ">Pagos</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
                 <div class="tabla">
                     <table class="table table-striped text-md" id="tabla-fiados">
                         <thead class="thead">
                             <tr>
-                                <th>Pago</th>
-                                <th>Monto</th>
+                                <th># Pago</th>
                                 <th>Fecha</th>
+                                <th>Responsable</th>
+                                <th>Monto</th>
+                                <th>Saldo</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="body-pagos">
-                         <!--    <tr>
-                                <td>1001</td>
-                                <td>50,000</td>
 
-                                <td>27/07/2024</td>
-                                <td>
-                                    <div class="d-flex justify-content-">
-                                        <button type="button"
-                                            class="btn btn-sm bg-hover-azul  text-white toolMio mr-3"><span
-                                                class="toolMio-text">Ver</span><i class="fas fa-search"></i></button>
-
-                                        <button type="button"
-                                            class="btn btn-sm bg-hover-azul mr-2  text-white toolMio"><span
-                                                class="toolMio-text">Eliminar</span><i
-                                                class="fas fa-trash"></i></button>
-
-                                    </div>
-                                </td>
-                            </tr> -->
                         </tbody>
                     </table>
+
                 </div>
+
             </div>
+            <!-- /.modal-content -->
         </div>
+        <!-- /.modal-dialog -->
     </div>
 </div>
+
 
 
 <div class="modal fade" id="modal-pago">
@@ -226,7 +207,7 @@
                             <p class="my-2"><strong class="" id="total-venta">50,000</strong></p>
                         </div>
                     </div>
-                  
+
                     <div class="col-md-6 pr-4">
                         <div class="d-flex justify-content-between  border-bottom">
                             <p class="my-2">Cliente: </p>
@@ -239,7 +220,7 @@
                             <p class="my-2"><strong class="" id="recaudo-venta">20,000</strong></p>
                         </div>
                     </div>
-                  
+
                     <div class="col-md-6  pr-4">
                         <div class="d-flex justify-content-between border-bottom">
                             <p class="my-2">Fecha: </p>
@@ -254,35 +235,35 @@
 
 
                     </div>
-                   
-                    
-                    
+
+
+
 
                 </div>
-          
+
                 <!-- informacion de los productos -->
 
                 <div class="mt-4">
-                  
-                        <table class="table table-striped text-md" id="tabla-productos-fiados">
-                            <thead class="thead">
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>precio unitario</th>
-                                    <th>subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody id="body-productos-fiados">
-                             <!--    <tr>
+
+                    <table class="table table-striped text-md" id="tabla-productos-fiados">
+                        <thead class="thead">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>precio unitario</th>
+                                <th>subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-productos-fiados">
+                            <!--    <tr>
                                     <td>Ron Viejo de Caldas</td>
                                     <td>2</td>
                                     <td>25,000</td>
                                     <td>50,000</td>
                                 </tr> -->
-                            </tbody>
-                        </table>
-                 
+                        </tbody>
+                    </table>
+
                 </div>
 
             </div>

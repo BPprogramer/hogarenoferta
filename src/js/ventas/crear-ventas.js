@@ -10,9 +10,9 @@
             nombre: '',
             cantidad: '',
             precio_compra: '',
-            precio_venta: '',
-            precio: '',
-            precio_original: '',
+            precio_venta: '', //este es el precio de evnta de esta venta  ya que el usuario puede rebajarle al producto al momento  de venderlo
+            // precio: '',
+            precio_original: '', //este es el percio de venta con el que se registro el producto
             valor_total: '',
             stock: ''
         }
@@ -40,7 +40,7 @@
 
 
         const totalInput = document.querySelector('#total');
-        const totalLibreInput = document.querySelector('#total_libre');
+        // const totalLibreInput = document.querySelector('#total_libre'); eliminamos mercado libre
         const descuentoInput = document.querySelector('#descuento');
         const totalPagarInput = document.querySelector('#total_pagar');
         const medotodoPago = document.querySelector('#metodo_pago');
@@ -170,7 +170,7 @@
 
 
 
-
+        /* aqui hacemos click ya en el boton guardar venta coo tal y validamos */
         guardarVentaBtn.addEventListener('click', function () {
             revisarVenta();
         })
@@ -284,6 +284,8 @@
             }
 
         }
+
+        /* cundo visitamos una venta existente la consultas */
         async function consultarVenta() {
             const url = `${location.origin}/api/venta?id=${ventaId}`;
             try {
@@ -294,7 +296,10 @@
 
             }
         }
+
+        /* esto es para cando estamos editando la venta */
         function llenarInformacion(resultado) {
+    
             clienteId = resultado.cliente_id;
 
             const productosVenta = resultado.productos_venta
@@ -311,7 +316,7 @@
                     cantidad: productoVenta.cantidad,
                     precio_compra: productoVenta.precio_compra,
                     precio_venta: productoVenta.precio_factura,
-                    precio: productoVenta.precio,
+                    // precio: productoVenta.precio,
                     precio_original: productoVenta.precio_venta,
                     valor_total: productoVenta.precio_factura * productoVenta.cantidad,
                     stock: parseFloat(productoVenta.stock) + parseFloat(productoVenta.cantidad)
@@ -355,8 +360,9 @@
                 }
 
                 optionToSelect.selected = true;
+          
                 abono.value = (parseFloat(venta.recaudo)).toLocaleString('en');
-                saldo.value = (venta.total - venta.recaudo).toLocaleString('en');
+                saldo.value = (venta.total_factura - venta.recaudo).toLocaleString('en');
                 pagoContado.classList.add('d-none');
                 pagoCuotas.classList.remove('d-none');
 
@@ -396,16 +402,16 @@
         }
         async function enviarInformacion() {
 
-
-
+      
+            console.log(valoresObj)
 
             const datos = new FormData();
             if (ventaId) {
                 datos.append('id', ventaId);
             }
             datos.append('productosArray', JSON.stringify(productosArray));
-            datos.append('total_factura', valoresObj.total_pagar);
-            datos.append('total', valoresObj.total_libre);
+            datos.append('total_factura', valoresObj.total_pagar); //total de esta venta
+            datos.append('total', valoresObj.total_sin_descuento); //total de sin descuento
 
             datos.append('costo', valoresObj.costo);
             datos.append('descuento', valoresObj.descuento);
@@ -420,16 +426,15 @@
                 datos.append('cliente_id', selectClientes.value)
                 datos.append('recaudo', valor_abono);
                 if (parseFloat(valor_abono) < parseFloat(valoresObj.total_pagar)) {
-                    datos.append('estado', 0);
+                    datos.append('pagado', 0);
                 } else {
-                    datos.append('estado', 1);
+                    datos.append('pagado', 1);
                 }
 
             } else {
-                datos.append('estado', 1);
+                datos.append('pagado', 1);
                 datos.append('recaudo', valoresObj.total_pagar);
             }
-
 
 
             datos.append('nombre_cliente', nombreCliente.value)
@@ -437,10 +442,7 @@
             datos.append('celular_cliente', celularCliente.value)
             datos.append('direccion_cliente', direccionCliente.value);
             datos.append('email_cliente', emailCliente.value);
-
-
-
-
+          
 
             let url;
             if (ventaId) {
@@ -456,9 +458,9 @@
                     method: 'POST',
                     body: datos
                 });
+              
                 const resultado = await respuesta.json();
-
-                // return;
+                console.log(resultado)
                 eliminarToastAnterior();
 
                 if (resultado.type == 'error') {
@@ -488,7 +490,7 @@
                     eliminarToastAnterior();
                 }, 8000)
             } catch (error) {
-
+                console.log(error)
             }
 
         }
@@ -646,7 +648,8 @@
             const contenedorProductos = document.querySelector('#productosVenta');
             limpiarHtml(contenedorProductos);
             productosArray.forEach(producto => {
-                const { id, nombre, precio_venta, precio, cantidad, valor_total, stock } = producto;
+                const { id, nombre, precio_venta, cantidad, valor_total, stock } = producto;
+          
 
                 const rowDiv = document.createElement('DIV');
                 rowDiv.classList.add('row', 'px-2');
@@ -655,7 +658,7 @@
                 //Producto
 
                 const col1Div = document.createElement('DIV');
-                col1Div.classList.add('col-sm-3');
+                col1Div.classList.add('col-sm-4');
 
                 const group1Div = document.createElement('DIV');
                 group1Div.classList.add('input-group', 'mb-3');
@@ -679,7 +682,7 @@
 
 
                 const col7Div = document.createElement('DIV');
-                col7Div.classList.add('col-sm-1');
+                col7Div.classList.add('col-sm-2');
 
                 const group7Div = document.createElement('DIV');
                 group7Div.classList.add('input-group', 'mb-3');
@@ -766,39 +769,39 @@
 
                 //precio sin comision para cuando se usa mercado libre
 
-                const col5Div = document.createElement('DIV');
-                col5Div.classList.add('col-sm-2');
-                const group5Div = document.createElement('DIV');
-                group5Div.classList.add('input-group', 'mb-3');
+                // const col5Div = document.createElement('DIV');
+                // col5Div.classList.add('col-sm-2');
+                // const group5Div = document.createElement('DIV');
+                // group5Div.classList.add('input-group', 'mb-3');
 
-                const prepend5Div = document.createElement('DIV');
-                prepend5Div.classList.add('input-group-prepend');
-                prepend5Div.innerHTML = `<span class="input-group-text bg-icono"> <i class="fas fa-dollar-sign text-azul"></i></i></span>`;
+                // const prepend5Div = document.createElement('DIV');
+                // prepend5Div.classList.add('input-group-prepend');
+                // prepend5Div.innerHTML = `<span class="input-group-text bg-icono"> <i class="fas fa-dollar-sign text-azul"></i></i></span>`;
 
-                const inputPrecioLibre = document.createElement('INPUT');
-                inputPrecioLibre.type = 'text';
-                inputPrecioLibre.classList.add('form-control');
-                inputPrecioLibre.value = parseFloat(precio).toLocaleString('en');
-
-
-                group5Div.appendChild(prepend5Div);
-                group5Div.appendChild(inputPrecioLibre);
-                col5Div.appendChild(group5Div);
-
-                inputPrecioLibre.oninput = () => {
+                // const inputPrecioLibre = document.createElement('INPUT');
+                // inputPrecioLibre.type = 'text';
+                // inputPrecioLibre.classList.add('form-control');
+                // inputPrecioLibre.value = parseFloat(precio).toLocaleString('en');
 
 
-                    const nuevo_precio_venta = formatearValor(inputPrecioLibre.value);
-                    inputPrecioLibre.value = nuevo_precio_venta;
-                    producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
+                // group5Div.appendChild(prepend5Div);
+                // group5Div.appendChild(inputPrecioLibre);
+                // col5Div.appendChild(group5Div);
 
-                    total_libre = 0;
-                    productosArray.forEach(producto => {
-                        total_libre = total_libre + producto.precio * producto.cantidad;
-                    })
-                    valoresObj.total_libre = total_libre;
-                    totalLibreInput.value = total_libre.toLocaleString('en');
-                }
+                // inputPrecioLibre.oninput = () => {
+
+                //     console.log(inputPrecioLibre.value)
+                //     const nuevo_precio_venta = formatearValor(inputPrecioLibre.value);
+                //     inputPrecioLibre.value = nuevo_precio_venta;
+                //     producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
+
+                //     total_libre = 0;
+                //     productosArray.forEach(producto => {
+                //         total_libre = total_libre + producto.precio * producto.cantidad;
+                //     })
+                //     valoresObj.total_libre = total_libre;
+                //     totalLibreInput.value = total_libre.toLocaleString('en');
+                // }
 
 
 
@@ -833,12 +836,14 @@
                     }, 0);
 
                 }
-                inputPrecio.oninput = () => {
 
+                /* este sera el precio de venta como tal para la venta ya que el usuario puede editarlo al momento de venderlo */
+                inputPrecio.oninput = () => {
+                    console.log(inputPrecio.value)
                     const nuevo_precio_venta = formatearValor(inputPrecio.value);
                     inputPrecio.value = nuevo_precio_venta;
-                    inputPrecioLibre.value = nuevo_precio_venta
-                    producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
+                    // inputPrecioLibre.value = nuevo_precio_venta
+                    // producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
                     modificarTotalPorProducto(inputPrecio.value, id, false)
                 }
                 inputPrecio.focus()
@@ -876,7 +881,7 @@
                 rowDiv.appendChild(col1Div);
                 rowDiv.appendChild(col7Div);
                 rowDiv.appendChild(col2Div);
-                rowDiv.appendChild(col5Div);
+                // rowDiv.appendChild(col5Div);
                 rowDiv.appendChild(col3Div);
                 rowDiv.appendChild(col4Div);
 
@@ -902,31 +907,37 @@
             saldo.value = valoresObj.total_pagar.toLocaleString('en');
         }
         function calcularTotal() {
+    
 
             let total = 0; //valor a pagar con el precio de venta original
             let total_pagar = 0; //valor a pagar con modificaciones de precios 
             let total_costo = 0;
-            let total_libre = 0;
+            // let total_libre = 0;
             productosArray.forEach(producto => {
 
                 total = total + producto.cantidad * producto.precio_original;
                 total_pagar = total_pagar + producto.cantidad * producto.precio_venta;
                 total_costo = total_costo + producto.cantidad * producto.precio_compra;
-                total_libre = total_libre + producto.cantidad * producto.precio;
+                // total_libre = total_libre + producto.cantidad * producto.precio;
             })
+          
 
             const descuento = 100 - total_pagar * 100 / total;
             descuentoInput.value = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) + '%' : 0 + '%';
+
             totalInput.value = total.toLocaleString('en');
+             
             totalPagarInput.value = total_pagar.toLocaleString('en');
-            totalLibreInput.value = total_libre.toLocaleString('en');
+                        
+            // totalLibreInput.value = total_libre.toLocaleString('en'); // lo elimina porque ya no existe
+        
 
             //llenamos el objeto con la informacion del pago de la venta
             valoresObj.total_sin_descuento = total;
             valoresObj.total_pagar = total_pagar;
             valoresObj.descuento = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) : 0;
             valoresObj.costo = total_costo;
-            valoresObj.total_libre = total_libre;
+            // valoresObj.total_libre = total_libre;
 
 
         }
@@ -1052,7 +1063,7 @@
                         cantidad: 1,
                         precio_compra,
                         precio_venta,
-                        precio: parseFloat(precio_venta),
+                        // precio: parseFloat(precio_venta),    //esto lo quitaos porque es paramercado libre
                         precio_original: parseFloat(precio_venta),
                         valor_total: precio_venta,
                         stock

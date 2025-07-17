@@ -54,9 +54,11 @@
                     method:'POST',
                     body:datos
                  })
-       
+     
                  const resultado = await respuesta.json();
-          
+
+                   
+               
                  eliminarToastAnterior();
                
                  if(resultado.type=='error'){
@@ -77,7 +79,7 @@
                     eliminarToastAnterior();
                  },8000)
             } catch (error) {
-                
+                console.log(error)
             }
         }
 

@@ -8,7 +8,7 @@
             monto: 0,
             deuda: 0,
             saldo: 0,
-            cliente_id: ''
+            venta_id: ''
         }
 
         let ventasInpagas = [];
@@ -16,7 +16,7 @@
         const btnSumitPago = document.querySelector('#btnSubmitPago');
 
         const bodyFiados = document.querySelector('#body-fiados');
-        const bodyPagos = document.querySelector('#body-pagos');
+
         const totalDeuda = document.querySelector('#total-deuda');
         const btnPagar = document.querySelector('#pagar');
         const formulario = document.querySelector('#pagoForm')
@@ -59,14 +59,35 @@
                 //resetearCliente();
             }
         });
-        btnPagar.addEventListener('click', function () {
-            id = null;
-            accionesModal();
-        })
+        // btnPagar.addEventListener('click', function () {
+        //     id = null;
+        //     accionesModal();
+        // })
+
+
+        /* funcion para validar que el monto a pagar no sea mayor que el monto de la deuda */
+        function validarMontoYSaldo() {
+            if (datosDeuda.saldo < 0) {
+
+                return false;
+            }
+            return true
+        }
 
         async function enviarDatos() {
+
+            const esValido = validarMontoYSaldo()
+            if (!esValido) {
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'El monto a pagar no puede superar el valor de la deuda',
+                })
+                return;
+            }
+
+
             const datos = new FormData();
-            datos.append('cliente_id', datosDeuda.cliente_id);
+            datos.append('venta_id', datosDeuda.venta_id);
             datos.append('monto', datosDeuda.monto);
             btnSumitPago.disabled = true;
             const url = `${location.origin}/api/pagar`;
@@ -76,11 +97,13 @@
                     body: datos
                 });
                 const resultado = await respuesta.json();
+
                 btnSumitPago.disabled = false;
                 $('#modal-pago').modal('hide');
                 eliminarToastAnterior();
 
                 if (resultado.type == 'error') {
+
                     $(document).Toasts('create', {
                         class: 'bg-danger',
                         title: 'Error',
@@ -120,19 +143,13 @@
             formulario.reset();
 
             btnSumitPago.disabled = false;
-            if ($('#selectClientes').val() != 0) {
-                $('#modal-pago').modal('show');
+            console.log(datosDeuda)
 
-                deudaActual.value = parseFloat(datosDeuda.deuda).toLocaleString('en')
-                saldoRestante.textContent = "$" + parseFloat(datosDeuda.saldo).toLocaleString('en');
-                inicializarValidador();
+            deudaActual.value = parseFloat(datosDeuda.deuda).toLocaleString('en')
+            saldoRestante.textContent = "$" + parseFloat(datosDeuda.saldo).toLocaleString('en');
+            inicializarValidador();
 
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    text: 'Por favor seleccione un cliente',
-                })
-            }
+
 
         }
 
@@ -141,6 +158,7 @@
 
         async function consultarInfoCliente(id) {
             idCliente = id;
+
             try {
                 saldoRestante.textContent = '$0';
                 const respuesta = await fetch(`${location.origin}/api/pagos-cuotas?id=${id}`);
@@ -148,9 +166,10 @@
                 const resultado = await respuesta.json();
 
 
+
                 limpiarHtml(bodyFiados);
-                limpiarHtml(bodyPagos);
-                if (resultado.fiados.length == 0) {
+
+                if (resultado.ventas_fiadas.length == 0) {
                     Swal.fire({
                         icon: 'warning',
                         text: 'No hay fiados para este cliente',
@@ -162,9 +181,9 @@
 
 
                 } else {
-                    const { fiados, pagos_cuotas } = resultado;
-                    mostrarFiados(fiados);
-                    mostrarPagos(pagos_cuotas)
+                    const { ventas_fiadas } = resultado;
+                    mostrarFiados(ventas_fiadas);
+
                 }
 
             } catch (error) {
@@ -173,79 +192,32 @@
             }
         }
 
-        function mostrarPagos(pagos) {
 
 
-            pagos.forEach(pago => {
-                const { numero_pago, monto, fecha_pago } = pago;
 
-                const tr = document.createElement('TR');
+        function alertaEliminarPago(pago) {
 
-                const tdNumeroPago = document.createElement('TD');
-                tdNumeroPago.textContent = '#' + numero_pago;
 
-                const tdMonto = document.createElement('TD');
-                tdMonto.textContent = '$' + parseFloat(monto).toLocaleString('en');
-
-                const tdFecha = document.createElement('TD');
-                tdFecha.textContent = fecha_pago;
-
-                const tdAcciones = document.createElement('TD');
-                const divAcciones = document.createElement('DIV');
-                divAcciones.classList.add('d-flex', 'ustify-content-start');
-
-                // const btnInfo = document.createElement('BUTTON');
-                // btnInfo.type = 'button'
-                // btnInfo.classList.add('btn', 'btn-sm', 'mr-4', 'bg-hover-azul', 'text-white', 'toolMio');
-                // btnInfo.innerHTML = '<span class="toolMio-text">Ver</span><i class="fas fa-search"></i>';
-
-                const btnEliminar = document.createElement('BUTTON');
-                btnEliminar.type = 'button'
-                btnEliminar.classList.add('btn', 'btn-sm', 'bg-hover-azul', 'text-white', 'toolMio');
-                btnEliminar.innerHTML = '<span class="toolMio-text">Eliminar</span><i class="fas fa-trash"></i>';
-
-                btnEliminar.onclick = function () {
-                    //eliminarPago(pago.numero_pago); //vamos a revisar que la 
-                    alertaEliminarPago(pago);
-                }
-                // divAcciones.appendChild(btnInfo);
-                divAcciones.appendChild(btnEliminar);
-                tdAcciones.appendChild(divAcciones);
-
-                tr.appendChild(tdNumeroPago)
-                tr.appendChild(tdMonto)
-                tr.appendChild(tdFecha)
-
-                tr.appendChild(tdAcciones);
-                bodyPagos.appendChild(tr);
-
-            });
-
-        }
-
-        function alertaEliminarPago(pago){
-            
-            
             Swal.fire({
-                icon:'warning',
-                html: `<h2 class="">esta seguro de eliminar el pago por un valor de <span class="font-weight-bold"> ${(parseFloat(pago.monto)).toLocaleString('en')} </span>?</h2><br><p>Esta acción no se puede deshacer</p>`,
-          
+                icon: 'warning',
+                html: `<h2 class="">esta seguro de eliminar el pago número ${pago.payment_number} por un valor de <span class="font-weight-bold"> ${(parseFloat(pago.payment_amount)).toLocaleString('en')} </span>?</h2><br><p>Esta acción no se puede deshacer</p>`,
+
                 showCancelButton: true,
                 confirmButtonText: 'Eliminar',
                 cancelButtonText: `Cancelar`,
-                
 
-            }).then(result=>{
-                if(result.isConfirmed){
+
+            }).then(result => {
+                if (result.isConfirmed) {
                     eliminarPago(pago)
                 }
             })
         }
 
         async function eliminarPago(pago) {
-           
+
             const datos = new FormData();
-            datos.append('numero_pago', pago.numero_pago);
+            datos.append('id', pago.id);
             const url = `${location.origin}/api/eliminar-pago`;
             try {
                 const respuesta = await fetch(url, {
@@ -253,8 +225,9 @@
                     body: datos
                 })
                 const resultado = await respuesta.json();
-              
-               
+
+
+
                 eliminarToastAnterior();
 
                 if (resultado.type == 'error') {
@@ -265,13 +238,14 @@
                         body: resultado.msg
                     })
                 } else {
-                    console.log(resultado)
+
                     $(document).Toasts('create', {
                         class: 'bg-azul text-blanco',
                         title: 'Completado',
 
                         body: resultado.msg
                     })
+                    $('#modal-pagos').modal('hide');
                     consultarInfoCliente(idCliente)
 
                 }
@@ -285,13 +259,15 @@
         }
 
 
-        function mostrarFiados(fiados) {
+        function mostrarFiados(ventas_fiadas) {
 
             let total_deuda = 0;
 
-            fiados.forEach(fiado => {
-                const { codigo, venta_id, total, recaudo, estado } = fiado;
-                if (estado != 0) {
+            ventas_fiadas.forEach(venta_fiada => {
+
+                const { codigo, total_factura, recaudo, pagado } = venta_fiada;
+
+                if (pagado != 0) {
                     ventasInpagas.push();
                 }
 
@@ -301,13 +277,13 @@
                 tdCodigo.textContent = '#' + codigo;
 
                 const tdTotal = document.createElement('TD');
-                tdTotal.textContent = '$' + parseFloat(total).toLocaleString('en');
+                tdTotal.textContent = '$' + parseFloat(total_factura).toLocaleString('en');
 
                 const tdAbono = document.createElement('TD');
                 tdAbono.textContent = '$' + parseFloat(recaudo).toLocaleString('en');
 
                 const tdDeuda = document.createElement('TD');
-                tdDeuda.textContent = '$' + parseFloat(total - recaudo).toLocaleString('en');
+                tdDeuda.textContent = '$' + parseFloat(total_factura - recaudo).toLocaleString('en');
 
                 const tdEstado = document.createElement('TD');
 
@@ -319,8 +295,8 @@
 
                 btnEstado.classList.add('btn', 'w-40', 'btn-inline', 'btn-sm');
 
-                if (estado == 0) {
-                    total_deuda = total_deuda + parseFloat(total) - parseFloat(recaudo);
+                if (pagado == 0) {
+                    total_deuda = total_deuda + parseFloat(total_factura) - parseFloat(recaudo);
                     btnEstado.textContent = 'Pendiente';
                     btnEstado.classList.add('btn-danger');
                 } else {
@@ -335,18 +311,35 @@
 
                 const tdInfo = document.createElement('TD');
                 const divInfo = document.createElement('DIV');
-                divInfo.classList.add('d-flex', 'ustify-content-start');
+                divInfo.classList.add('d-flex', 'justify-content-start');
 
                 const btnInfo = document.createElement('BUTTON');
                 btnInfo.type = 'button'
-                btnInfo.classList.add('btn', 'btn-sm', 'bg-hover-azul', 'text-white', 'toolMio');
-                btnInfo.innerHTML = '<span class="toolMio-text">Ver</span><i class="fas fa-search"></i>';
+                btnInfo.classList.add('btn', 'btn-sm', 'bg-hover-azul', 'text-white', 'toolMio', 'mr-2');
+                btnInfo.innerHTML = '<span class="toolMio-text">Ver venta</span><i class="fas fa-search"></i>';
+                const btnPagos = document.createElement('BUTTON');
+                btnPagos.type = 'button'
+                btnPagos.classList.add('btn', 'btn-sm', 'bg-hover-azul', 'text-white', 'toolMio', 'mr-2');
+                btnPagos.innerHTML = '<span class="toolMio-text">Pagos</span><i class="fas fa-money-bill-wave"></i>  ';
+
+                const btnPagar = document.createElement('BUTTON');
+                btnPagar.type = 'button'
+                btnPagar.classList.add('btn', 'btn-sm', 'bg-hover-azul', 'text-white', 'toolMio');
+                btnPagar.innerHTML = '<span class="toolMio-text">Pagar</span><i class="fas fa-coins"></i>  ';
 
                 btnInfo.onclick = () => {
-                    consultarInfo(fiado);
+                    consultarInfoVentaFiada(venta_fiada); //consultamos la ifnromacion de la venta normal
+                }
+                btnPagos.onclick = () => {
+                    cosultarPagosVentaFianda(venta_fiada); //consultamos los pagos que se han hecho a esta venta
+                }
+                btnPagar.onclick = () => {
+                    pagarVentaFiada(venta_fiada); //consultamos los pagos que se han hecho a esta venta
                 }
 
                 divInfo.appendChild(btnInfo);
+                divInfo.appendChild(btnPagos);
+                divInfo.appendChild(btnPagar);
                 tdInfo.appendChild(divInfo);
 
                 tr.appendChild(tdCodigo)
@@ -356,16 +349,15 @@
                 tr.appendChild(tdEstado)
                 tr.appendChild(tdInfo);
                 bodyFiados.appendChild(tr);
-                datosDeuda.cliente_id = fiado.cliente_id;
+                datosDeuda.cliente_id = venta_fiada.cliente_id;
             });
             totalDeuda.textContent = parseFloat(total_deuda).toLocaleString('en')
             datosDeuda.deuda = total_deuda;
             datosDeuda.saldo = total_deuda;
 
-
-
-
         }
+
+
 
         function mostrarInfoFiado(fiado, productos) {
 
@@ -411,23 +403,132 @@
 
         }
 
-        async function consultarInfo(fiado) {
+        /* para mostrar los pagos relacionados a una venta */
+        function mostrarPagos(venta_fiada, pagos) {
+            const bodyPagos = document.querySelector('#body-pagos');
+            limpiarHtml(bodyPagos);
+            pagos.forEach(pago => {
+                const { payment_number, date, payment_amount, responsible, remaining_balance } = pago;
+
+                const tr = document.createElement('TR');
+
+                const tdPaymentNumber = document.createElement('TD');
+                tdPaymentNumber.textContent = '#' + payment_number;
+
+                const tdDate = document.createElement('TD');
+                tdDate.textContent = date;
+                const tdResponsible = document.createElement('TD');
+                tdResponsible.textContent = responsible.nombre;
+
+
+                const tdPaymentAmount = document.createElement('TD');
+                tdPaymentAmount.textContent = '$' + parseFloat(payment_amount).toLocaleString('en');
+
+                const tdRemainingaBalance = document.createElement('TD');
+                tdRemainingaBalance.textContent = '$' + parseFloat(remaining_balance).toLocaleString('en');
+
+
+
+                const tdActions = document.createElement('TD');
+                const divActions = document.createElement('DIV');
+                divActions.classList.add('d-flex', 'ustify-content-start');
+
+
+                const btnDelete = document.createElement('BUTTON');
+                btnDelete.type = 'button'
+                btnDelete.classList.add('btn', 'btn-sm', 'bg-hover-azul', 'text-white', 'toolMio');
+                btnDelete.innerHTML = '<span class="toolMio-text">Eliminar</span><i class="fas fa-trash"></i>';
+
+                btnDelete.onclick = function () {
+                    //eliminarPago(pago.numero_pago); //vamos a revisar que la 
+                    alertaEliminarPago(pago);
+                }
+                // divActions.appendChild(btnInfo);
+                divActions.appendChild(btnDelete);
+                tdActions.appendChild(divActions);
+
+                tr.appendChild(tdPaymentNumber)
+                tr.appendChild(tdDate)
+                tr.appendChild(tdResponsible)
+                tr.appendChild(tdPaymentAmount)
+                tr.appendChild(tdRemainingaBalance)
+
+
+                tr.appendChild(tdActions);
+                bodyPagos.appendChild(tr);
+
+            });
+
+        }
+
+        async function consultarInfoVentaFiada(venta_fiada) {
+
             $('#modal-info').modal('show');
 
             try {
-                const respuesta = await fetch(`${location.origin}/api/productos-fiados?venta-id=${fiado.venta_id}`);
+                const respuesta = await fetch(`${location.origin}/api/productos-fiados?venta_id=${venta_fiada.id}`);
                 const resultado = await respuesta.json();
+
                 if (resultado.type == 'error') {
                     Swal.fire({
                         icon: 'error',
                         text: resultado.msg,
                     })
                 } else {
-                    mostrarInfoFiado(fiado, resultado)
+
+                    mostrarInfoFiado(venta_fiada, resultado)
                 }
             } catch (error) {
 
             }
+
+
+
+        }
+        async function cosultarPagosVentaFianda(venta_fiada) {
+
+
+            try {
+
+                const respuesta = await fetch(`${location.origin}/api/pagos-por-venta?venta_id=${venta_fiada.id}`);
+                const resultado = await respuesta.json();
+
+
+                if (resultado.type == 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        text: resultado.msg,
+                    })
+                } else {
+
+                    $('#modal-pagos').modal('show');
+                    mostrarPagos(venta_fiada, resultado.data)
+                }
+            } catch (error) {
+
+            }
+
+        }
+        async function pagarVentaFiada(venta_fiada) {
+
+            const { total_factura, recaudo, id, pagado } = venta_fiada
+            if (pagado == 1) {
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'Esta venta ya se encuentra pagada en su totalidad',
+                })
+            } else {
+                $('#modal-pago').modal('show');
+                datosDeuda.deuda = total_factura - recaudo
+                datosDeuda.saldo = total_factura - recaudo
+                datosDeuda.venta_id = id
+
+                accionesModal()
+            }
+
+
+
+
 
 
 

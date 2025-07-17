@@ -21,8 +21,8 @@ class  ProductosVenta extends ActiveRecord {
     {
         $this->id = $args['id'] ?? null;
         $this->cantidad = $args['cantidad'] ?? '';
-        $this->precio = $args['precio'] ?? '';
-        $this->precio_factura = $args['precio_factura'] ?? '';
+        $this->precio = $args['precio'] ?? ''; //este es el precio de venta con el que el usuario registro la venta
+        $this->precio_factura = $args['precio_factura'] ?? ''; //este es el precio al que el usuario vendio el producto ya que puede hacer una rebaja al momento de venderlo
         $this->producto_id = $args['producto_id'] ?? '';
         $this->venta_id = $args['venta_id'] ?? '';
       

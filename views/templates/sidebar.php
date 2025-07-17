@@ -83,22 +83,7 @@
 
           </ul>
         </li>
-        <li class="nav-item">
-          <a href="/mercadolibre" class="nav-link <?php echo pagina_actual('/mercadolibre') ? 'active' : '' ?>">
-            <i class="nav-icon fa-solid fa-shop"></i>
-            <p>
-              Mercado Libre
-            </p>
-          </a>
-        </li>
-        <!--    <li class="nav-item">
-          <a href="/fiados" class="nav-link <?php echo pagina_actual('/fiados') ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-hand-holding-usd"></i>
-            <p>
-              Fiados
-            </p>
-          </a>
-        </li> -->
+  
 
         <li class="nav-item">
           <a href="" class="nav-link <?php echo (pagina_actual('fiados') || pagina_actual('fiados')) ? 'active' : ''; ?>

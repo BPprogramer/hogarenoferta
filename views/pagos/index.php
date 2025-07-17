@@ -17,7 +17,7 @@
                 <h3 class="card-title">Pagos</h3>
               </div>
               <div class="col-4 d-flex justify-content-end">
-               <!--  <button type="button" id="registrar" class="btn bg-hover-azul text-white toolMio">
+                <!--  <button type="button" id="registrar" class="btn bg-hover-azul text-white toolMio">
                   Registrar Producto
                 </button> -->
               </div>
@@ -30,13 +30,15 @@
                 <tr>
                   <th>#</th>
                   <th>No de pago</th>
+                  <th>No de Venta</th>
+                  <th>No Caja</th>
                   <th>Monto</th>
                   <th>Saldo</th>
-                  <th>No Caja</th>
-            <!--       <th>No venta</th> -->
+
+                  <!--       <th>No venta</th> -->
                   <th>Fecha</th>
 
-<!-- 
+                  <!-- 
                   <th class="text-center">Acciones</th> -->
                 </tr>
               </thead>
@@ -53,7 +55,3 @@
   </div>
   <!-- /.container-fluid -->
 </section>
-
-
-
-

@@ -55,11 +55,12 @@ $router->get('/productos', [ProductosController::class, 'index']);
 $router->get('/proveedores', [ProveedoresController::class, 'index']);
 $router->get('/cajas',[CajasController::class, 'index']);
 $router->get('/fiados',[FiadosController::class, 'index']);
+$router->get('/creditos',[FiadosController::class, 'index']);
 $router->get('/pagos',[PagosController::class, 'index']);
 $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
 $router->get('/compras',[AvastesimientoController::class, 'index']);
-$router->get('/mercadolibre',[MercadoLibreController::class, 'index']);
+// $router->get('/mercadolibre',[MercadoLibreController::class, 'index']);
 $router->get('/productos-ventas',[ProductosVentasController::class, 'index']);
 
 /* VENTAS CONTROLLERS */
@@ -165,9 +166,10 @@ $router->post('/api/caja/cerrar',[ApiCajas::class, 'cerrar']);
 
 /* API de las cuotas o fiados */
 
-$router->get('/api/pagos-cuotas',[ApiFiados::class, 'pagosCuotas']);
+$router->get('/api/pagos-cuotas',[ApiFiados::class, 'ventasFiadas']);  /* consultamos las ventas que el cliente ha sacado fiadas sin importar si ya las pago o no  */
 // $router->get('/api/cuotas',[ApiFiados::class, 'cuotas']);
 $router->get('/api/pagos',[ApiPagos::class, 'pagos']);
+$router->get('/api/pagos-por-venta',[ApiPagos::class, 'pagosPorVenta']); //consultamos los pagos asociados a una venta
 
 $router->get('/api/productos-fiados',[ApiFiados::class, 'productosFiados']);
 $router->post('/api/pagar',[ApiFiados::class, 'pagar']);

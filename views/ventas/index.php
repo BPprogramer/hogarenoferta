@@ -17,7 +17,7 @@
                                 <h3 class="card-title">Ventas</h3>
                             </div>
                             <div class="col-4 d-flex justify-content-end">
-                                <a href="/crear-venta"  class="btn bg-hover-azul text-white toolMio">
+                                <a href="/crear-venta" class="btn bg-hover-azul text-white toolMio">
                                     Agregar Venta
                                 </a>
                             </div>
@@ -32,7 +32,7 @@
                                     <th>CODIGO</th>
                                     <th>TOTAL</th>
                                     <th>RECUADO</th>
-                           
+
                                     <th>ESTADO</th>
                                     <th>No CAJA</th>
                                     <th>FECHA</th>
@@ -258,7 +258,7 @@
                             <p class="my-2"><strong class="" id="total-venta"></strong></p>
                         </div>
                     </div>
-                  
+
                     <div class="col-md-6 pr-4">
                         <div class="d-flex justify-content-between  border-bottom">
                             <p class="my-2">Cliente: </p>
@@ -271,7 +271,7 @@
                             <p class="my-2"><strong class="" id="recaudo-venta"></strong></p>
                         </div>
                     </div>
-                  
+
                     <div class="col-md-6  pr-4">
                         <div class="d-flex justify-content-between border-bottom">
                             <p class="my-2">Fecha: </p>
@@ -287,7 +287,7 @@
 
                     </div>
                     <div class="col-md-6 pr-4">
-                      
+
                         <div class="d-flex justify-content-between  border-bottom">
                             <p class="my-2">Estado </p>
                             <p class="my-2"><strong class="" id="estado-venta"></strong></p>
@@ -302,47 +302,50 @@
 
 
                     </div>
-                    <div class="col-md-6 pl-4">
-                        
-
-                    </div>
-                    <div class="col-md-6 pl-4">
+                    <div class="col-md-6 pr-4">
                         <div class="d-flex justify-content-between  border-bottom">
-                            <p class="my-2">Total Sin Comisión </p>
-                            <p class="my-2"><strong class="" id="total-sin-comision"></strong></p>
+                            <p class="my-2">Total Sin descuento </p>
+                            <p class="my-2"><strong class="" id="total"></strong></p>
                         </div>
 
+                    </div>
+                    <div class="col-md-6 pl-4">
+
+                        <div class="d-flex justify-content-between  border-bottom">
+                            <p class="my-2">Descuento </p>
+                            <p class="my-2"><strong class="" id="total-sin-descuento"></strong></p>
+                        </div>
 
                     </div>
-                   
-                    
-                    
+
+
+
 
                 </div>
-          
+
                 <!-- informacion de los productos -->
 
                 <div class="mt-4">
-                  
-                        <table class="table table-striped text-md" id="tabla-productos-fiados">
-                            <thead class="thead">
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>precio unitario</th>
-                                    <th>subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody id="body-productos-venta">
-                             <!--    <tr>
+
+                    <table class="table table-striped text-md" id="tabla-productos-fiados">
+                        <thead class="thead">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>precio unitario</th>
+                                <th>subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-productos-venta">
+                            <!--    <tr>
                                     <td>Ron Viejo de Caldas</td>
                                     <td>2</td>
                                     <td>25,000</td>
                                     <td>50,000</td>
                                 </tr> -->
-                            </tbody>
-                        </table>
-                 
+                        </tbody>
+                    </table>
+
                 </div>
 
             </div>

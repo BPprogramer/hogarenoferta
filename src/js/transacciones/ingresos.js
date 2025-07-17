@@ -183,10 +183,10 @@
                 url:'/api/ingresos',
                 dataType:'json',
                 success:function(req){
-                    console.log(req)
+                 
                 },
                 error:function(error){
-                    console.log(error.resposeText)
+                    
                 }
             })
        

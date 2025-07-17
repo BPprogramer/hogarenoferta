@@ -50,10 +50,10 @@ class ApiReportes{
 
      
     
-        $numero_ventas = Venta::contarPorFecha('estado',1, 'fecha', $fecha);
+        $numero_ventas = Venta::contarPorFecha('pagado',1, 'fecha', $fecha);
  
 
-        $numero_fiados = Venta::contarPorFecha('estado',0, 'fecha', $fecha);
+        $numero_fiados = Venta::contarPorFecha('pagado',0, 'fecha', $fecha);
         $numero_pagos = Cuota::contarPorFecha(null,null, 'fecha_pago', $fecha);
         $numero_cajas = Caja::contarPorFecha(null,null, 'fecha_apertura', $fecha);
         $numero_productos = Producto::contar();

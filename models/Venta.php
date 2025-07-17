@@ -4,7 +4,7 @@ namespace Model;
 
 class  Venta extends ActiveRecord {
     protected static $tabla = 'ventas';
-    protected static $columnasDB = ['id', 'codigo','total','total_factura', 'recaudo', 'costo', 'descuento', 'metodo_pago', 'estado', 'fecha', 'nombre_cliente','cedula_cliente','celular_cliente','direccion_cliente','email_cliente',  'vendedor_id', 'caja_id'];
+    protected static $columnasDB = ['id', 'codigo','total','total_factura', 'recaudo', 'costo', 'descuento', 'metodo_pago', 'pagado', 'fecha', 'nombre_cliente','cedula_cliente','celular_cliente','direccion_cliente','email_cliente',  'vendedor_id', 'caja_id', 'cliente_id'];
 
 
     public $id;
@@ -14,8 +14,8 @@ class  Venta extends ActiveRecord {
     public $recaudo;
     public $costo;
     public $descuento;
-    public $metodo_pago;
-    public $estado;
+    public $metodo_pago; //   1 para contado 2 para credito
+    public $pagado;
     public $fecha;
     public $nombre_cliente;
     public $cedula_cliente;
@@ -25,6 +25,8 @@ class  Venta extends ActiveRecord {
 
     public $vendedor_id;
     public $caja_id;
+    public $cliente_id; 
+
 
 
  
@@ -38,7 +40,7 @@ class  Venta extends ActiveRecord {
         $this->costo = $args['costo'] ?? '';
         $this->descuento = $args['descuento'] ?? '';
         $this->metodo_pago = $args['metodo_pago'] ?? '';
-        $this->estado = $args['estado'] ?? '';
+        $this->pagado = $args['pagado'] ?? '';
         $this->fecha = $args['fecha'] ?? '';
         $this->nombre_cliente = $args['nombre_cliente'] ?? '';
         $this->cedula_cliente = $args['cedula_cliente'] ?? '';

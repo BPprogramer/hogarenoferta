@@ -2,23 +2,12 @@
     const pagos = document.querySelector('#pagos');
     if(pagos){
    
-    
 
 
         let tablaProductos;
     
- 
 
         mostrarProductos();
-     
-     
-
-      
-
-   
-
-
-   
 
         function mostrarProductos(){
       
@@ -52,7 +41,7 @@
                 responsive:true
                 
             });
-            console.log('consultando productos')
+      
             // $.ajax({
             //     url:'/api/pagos',
             //     dataType:'json',

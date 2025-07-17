@@ -71,17 +71,17 @@
                     </div>
                     <hr class="my-2">
                     <div class="row px-2">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <p class="font-bold font-weight-bold">Producto</p>
                         </div>
                         <div class="col-sm-2">
                             <p class="font-bold font-weight-bold">Cantidad</p>
                         </div>
-                        <div class="col-sm-2">
+                   <!--      <div class="col-sm-2">
                             <p class="font-bold font-weight-bold">Precio Sin Comisión</p>
-                        </div>
+                        </div> -->
                         <div class="col-sm-2">
-                            <p class="font-bold font-weight-bold">Precio Normal</p>
+                            <p class="font-bold font-weight-bold">Precio Venta</p>
                         </div>
                         <div class="col-sm-2">
                             <p class="font-bold font-weight-bold">Sub Total</p>
@@ -108,9 +108,9 @@
                                         </div>
 
                                         <select class="form-control" name="" id="metodo_pago">
-                                            <option value="1">Pago de Contado</option>
-                                            <option value="2">Pago a Cuotas</option>
-                                            <option value="3">Venta en Mercadolibre</option>
+                                            <option value="1">De contado</option>
+                                            <option value="2">A credito</option>
+                                      <!--       <option value="3">Venta en Mercadolibre</option> -->
                                             <!--       <option value="3">Pago a Credito</option> -->
                                         </select>
                                     </div>
@@ -171,13 +171,13 @@
                             <div class="p-3">
 
                                 <div class="row">
-                                    <div class="input-group col-md-6">
+                                  <!--   <div class="input-group col-md-6">
                                         <div class="input-group-prepend">
                                             <button for="" class="btn pl-0 font-weight-bold">Total Sin Comision</button>
                                         </div>
 
                                         <input id="total_libre" value="0" type="text" name="" class="form-control" readonly>
-                                    </div>
+                                    </div> -->
 
                                     <div class="input-group col-md-6">
                                         <div class="input-group-prepend">
