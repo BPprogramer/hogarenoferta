@@ -1,35 +1,35 @@
-(function(){
+(function () {
     const ventas = document.querySelector('#ventas');
-    if(ventas){
+    if (ventas) {
         let tablaVentas;
-    
-        $('#tabla').on('click', '#editar', function(e){
-       
-          
-            id=e.currentTarget.dataset.ventaId;
 
-    
+        $('#tabla').on('click', '#editar', function (e) {
+
+
+            id = e.currentTarget.dataset.ventaId;
+
+
             revisarPagosAsociados(id);
 
-      
+
             // accionesModal();
         })
-        $('#tabla').on('click', '#eliminar', function(e){
+        $('#tabla').on('click', '#eliminar', function (e) {
             const ventaId = e.currentTarget.dataset.ventaId;
-         
-            alertaEliminarVenta(ventaId,e);
+
+            alertaEliminarVenta(ventaId, e);
         })
-        $('#tabla').on('click', '#imprimir', function(e){
+        $('#tabla').on('click', '#imprimir', function (e) {
             const ventaId = e.currentTarget.dataset.ventaId;
             imprimirVenta(ventaId);
         })
 
-        async function imprimirVenta(id){
+        async function imprimirVenta(id) {
             const datos = new FormData();
             datos.append('id', id);
             const url = `${location.origin}/api/imprimir-venta?id=${id}`;
             window.open(url, "_blank");
-         
+
             // try {
             //     const respuesta = await fetch(url)
             //     const resultado = await respuesta.json();
@@ -38,145 +38,172 @@
             //     console.log(error)
             // }
 
-     
-          
-        }
-    
 
-        async function revisarPagosAsociados(id){
-            
+
+        }
+
+
+        async function revisarPagosAsociados(id) {
+
             const datos = new FormData();
-      
+
             datos.append('id', id);
             const url = `${location.origin}/api/revisar-venta`;
             try {
-                const respuesta = await fetch(url,{
-                    method:'POST',
-                    body:datos
-                 })
-     
-                 const resultado = await respuesta.json();
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    body: datos
+                })
 
-                   
-               
-                 eliminarToastAnterior();
-               
-                 if(resultado.type=='error'){
-                     $(document).Toasts('create', {
-                         class: 'bg-danger',
-                         title: 'Error',
-                      
-                         body: resultado.msg
-                       })
-                 }else{
-              
+                const resultado = await respuesta.json();
+
+
+
+                eliminarToastAnterior();
+
+                if (resultado.type == 'error') {
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+
+                        body: resultado.msg
+                    })
+                } else {
+
                     const idString = id.toString();
                     window.location = `/crear-venta?id=${btoa(idString)}`;
-                     
-                 }
 
-                 setTimeout(()=>{
+                }
+
+                setTimeout(() => {
                     eliminarToastAnterior();
-                 },8000)
+                }, 8000)
             } catch (error) {
                 console.log(error)
             }
         }
 
-        function alertaEliminarVenta(id, e){
-  
+        function alertaEliminarVenta(id, e) {
+
             const numero_venta = e.currentTarget.parentElement.parentElement.parentElement.childNodes[1].textContent;
-          
-            
+
+
             Swal.fire({
-                icon:'warning',
+                icon: 'warning',
                 html: `<h2 class="">esta seguro de eliminar la venta numero <span class="font-weight-bold"> ${numero_venta} </span>?</h2><br><p>Esta acción no se puede deshacer</p>`,
-          
+
                 showCancelButton: true,
                 confirmButtonText: 'Eliminar',
                 cancelButtonText: `Cancelar`,
-                
 
-            }).then(result=>{
-                if(result.isConfirmed){
+
+            }).then(result => {
+                if (result.isConfirmed) {
                     eliminarVenta(id)
                 }
             })
         }
 
-        async function eliminarVenta(id){
+        async function eliminarVenta(id) {
             const datos = new FormData();
             datos.append('id', id);
-    
+
             url = `${location.origin}/api/venta/eliminar`;
             try {
-                const respuesta = await fetch(url,{
-                    body:datos,
+                const respuesta = await fetch(url, {
+                    body: datos,
                     method: 'POST'
                 })
                 const resultado = await respuesta.json();
-            
-         
-                
+
+
+
                 eliminarToastAnterior();
-            
-                if(resultado.type=='error'){
+
+                if (resultado.type == 'error') {
                     $(document).Toasts('create', {
                         class: 'bg-danger',
                         title: 'Error',
-                     
+
                         body: resultado.msg
-                      })
-                }else{
+                    })
+                } else {
 
                     $(document).Toasts('create', {
                         class: 'bg-azul text-blanco',
                         title: 'Completado',
-                        
+
                         body: resultado.msg
                     })
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         eliminarToastAnterior();
-                    },8000)
+                    }, 8000)
 
-                 
-                    tablaVentas.ajax.reload(); 
+
+                    tablaVentas.ajax.reload();
                 }
-            } catch (error) { 
-                
+            } catch (error) {
+
             }
         }
 
         mostrarVentas()
-        function mostrarVentas(){
-      
-            $("#tabla").dataTable().fnDestroy(); //por si me da error de reinicializar
-    
-            tablaVentas = $('#tabla').DataTable({
-                ajax: '/api/ventas',
-                "deferRender":true,
-                "retrieve":true,
-                "proccesing":true,
-                responsive:true,
-               
+        // function mostrarVentas(){
+
+        //     $("#tabla").dataTable().fnDestroy(); //por si me da error de reinicializar
+
+        //     tablaVentas = $('#tabla').DataTable({
+        //         ajax: '/api/ventas',
+        //         "deferRender":true,
+        //         "retrieve":true,
+        //         "proccesing":true,
+        //         responsive:true,
+
+        //     });
+
+
+
+        // }  
+
+        function mostrarVentas() {
+            if ($.fn.DataTable.isDataTable('#tabla')) {
+                $('#tabla').DataTable().destroy();
+            }
+
+            $('#tabla').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/api/ventas',
+                    type: 'GET'
+                },
+                responsive: true,
+                order: [[1, 'desc']],
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Entradas",
+                    "infoFiltered": "(filtrado de _MAX_ entradas totales)",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "No se encontraron resultados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
             });
- 
-            
-            // $.ajax({
-            //     url:'/api/ventas',
-            //     dataType:'json',
-            //     success:function(req){
-            //         console.log(req)
-            //     },
-            //     error:function(error){
-            //         console.log(error.resposeText)
-            //     }
-            // })
-       
-        }  
-        function eliminarToastAnterior(){
-            if(document.querySelector('#toastsContainerTopRight')){
+        }
+
+
+        function eliminarToastAnterior() {
+            if (document.querySelector('#toastsContainerTopRight')) {
                 document.querySelector('#toastsContainerTopRight').remove()
             }
         }

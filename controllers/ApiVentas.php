@@ -265,66 +265,142 @@ class ApiVentas
 
         $pdf->Output('example_001.pdf', 'I');
     }
+    // public static function ventas()
+    // {
+    //     $ventas = Venta::all();
+
+    //     $i = 0;
+
+    //     $datoJson = '{
+    //      "data": [';
+    //     foreach ($ventas as $key => $venta) {
+    //         $i++;
+    //         $caja = Caja::where('id', $venta->caja_id);
+
+    //         $acciones = "<div class='d-flex' >";
+    //         $acciones .= "<button data-venta-id ='" . $venta->id . "' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>";
+
+    //         if ($caja->estado == 0) {
+    //             $acciones .= "<button data-venta-id ='" . $venta->id . "' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
+    //             $acciones .= "<button data-venta-id ='" . $venta->id . "' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
+    //         }
+    //         $acciones .= "<button data-venta-id ='" . $venta->id . "' id='imprimir'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Imprimir</span><i class='fas fa-print'></i></button>";
+    //         $acciones .= "</div>";
+
+
+
+
+    //         $pagado = '';
+    //         if ($venta->pagado == 0) {
+    //             $pagado = "<div class='d-flex justify-content-center' >";
+    //             $pagado .= "<button   type='button' class='btn  w-65 btn-inline btn-danger btn-sm ' style='min-width:70px'>Pendiente</button>";
+    //             $pagado .= "</div >";
+    //         } else {
+    //             $pagado = "<div class='d-flex justify-content-center'>";
+    //             $pagado .= "<button   type='button' class='btn w-65 btn-inline bg-success text-white btn-sm' style='min-width:70px'>Pagado</button>";
+    //             $pagado .= "</div >";
+    //         }
+
+
+
+
+
+    //         $datoJson .= '[
+    //                      "' . $i . '",
+    //                      "' . $venta->codigo . '",
+    //                      "' . number_format($venta->total_factura) . '",
+    //                      "' . number_format($venta->recaudo) . '",
+    //                      "' . $pagado . '",
+    //                       "' . $venta->caja_id + 3000000 . '",
+    //                      "' . $venta->fecha . '",
+    //                      "' . $acciones . '"
+    //              ]';
+    //         if ($key != count($ventas) - 1) {
+    //             $datoJson .= ",";
+    //         }
+    //     }
+
+    //     $datoJson .=  ']}';
+
+
+    //     echo $datoJson;
+    // }
+
     public static function ventas()
     {
+        $start = $_GET['start'] ?? 0;
+        $length = $_GET['length'] ?? 10;
+        $search = $_GET['search']['value'] ?? '';
+        $orderColumnIndex = $_GET['order'][0]['column'] ?? 0;
+        $orderDir = $_GET['order'][0]['dir'] ?? 'asc';
+
+        // Columnas en orden visual (ajusta según tu tabla HTML)
+        $columnas = ['id', 'codigo', 'total_factura', 'recaudo', 'pagado', 'caja_id', 'fecha'];
+        $orderColumn = $columnas[$orderColumnIndex] ?? 'id';
+
         $ventas = Venta::all();
 
-        $i = 0;
-
-        $datoJson = '{
-         "data": [';
-        foreach ($ventas as $key => $venta) {
-            $i++;
-            $caja = Caja::where('id', $venta->caja_id);
-
-            $acciones = "<div class='d-flex' >";
-            $acciones .= "<button data-venta-id ='" . $venta->id . "' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>";
-
-            if ($caja->estado == 0) {
-                $acciones .= "<button data-venta-id ='" . $venta->id . "' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
-                $acciones .= "<button data-venta-id ='" . $venta->id . "' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
-            }
-            $acciones .= "<button data-venta-id ='" . $venta->id . "' id='imprimir'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Imprimir</span><i class='fas fa-print'></i></button>";
-            $acciones .= "</div>";
-
-
-
-
-            $pagado = '';
-            if ($venta->pagado == 0) {
-                $pagado = "<div class='d-flex justify-content-center' >";
-                $pagado .= "<button   type='button' class='btn  w-65 btn-inline btn-danger btn-sm ' style='min-width:70px'>Pendiente</button>";
-                $pagado .= "</div >";
-            } else {
-                $pagado = "<div class='d-flex justify-content-center'>";
-                $pagado .= "<button   type='button' class='btn w-65 btn-inline bg-success text-white btn-sm' style='min-width:70px'>Pagado</button>";
-                $pagado .= "</div >";
-            }
-
-
-
-
-
-            $datoJson .= '[
-                         "' . $i . '",
-                         "' . $venta->codigo . '",
-                         "' . number_format($venta->total_factura) . '",
-                         "' . number_format($venta->recaudo) . '",
-                         "' . $pagado . '",
-                          "' . $venta->caja_id + 3000000 . '",
-                         "' . $venta->fecha . '",
-                         "' . $acciones . '"
-                 ]';
-            if ($key != count($ventas) - 1) {
-                $datoJson .= ",";
-            }
+        // Búsqueda
+        if ($search !== '') {
+            $ventas = array_filter($ventas, function ($venta) use ($search) {
+                return stripos($venta->codigo, $search) !== false ||
+                    stripos($venta->fecha, $search) !== false;
+            });
         }
 
-        $datoJson .=  ']}';
+        // Ordenar
+        usort($ventas, function ($a, $b) use ($orderColumn, $orderDir) {
+            $valorA = strtolower((string) $a->{$orderColumn});
+            $valorB = strtolower((string) $b->{$orderColumn});
+            return $orderDir === 'asc' ? $valorA <=> $valorB : $valorB <=> $valorA;
+        });
 
+        $totalRegistros = count($ventas);
+        $ventas = array_slice($ventas, $start, $length);
 
-        echo $datoJson;
+        $data = [];
+        foreach ($ventas as $index => $venta) {
+            $i = $start + $index + 1;
+
+            $caja = Caja::where('id', $venta->caja_id);
+
+            // Botones de acción
+            $acciones = "<div class='d-flex'>";
+            $acciones .= "<button data-venta-id='{$venta->id}' id='info' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>";
+            if ($caja && $caja->estado == 0) {
+                $acciones .= "<button data-venta-id='{$venta->id}' id='editar' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
+                $acciones .= "<button data-venta-id='{$venta->id}' id='eliminar' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash'></i></button>";
+            }
+            $acciones .= "<button data-venta-id='{$venta->id}' id='imprimir' type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Imprimir</span><i class='fas fa-print'></i></button>";
+            $acciones .= "</div>";
+
+            // Estado de pago
+            $pagado = "<div class='d-flex justify-content-center'>";
+            $pagado .= $venta->pagado == 0
+                ? "<button type='button' class='btn w-65 btn-inline btn-danger btn-sm' style='min-width:70px'>Pendiente</button>"
+                : "<button type='button' class='btn w-65 btn-inline bg-success text-white btn-sm' style='min-width:70px'>Pagado</button>";
+            $pagado .= "</div>";
+
+            $data[] = [
+                $i,
+                $venta->codigo,
+                number_format($venta->total_factura),
+                number_format($venta->recaudo),
+                $pagado,
+                $venta->caja_id + 3000000,
+                $venta->fecha,
+                $acciones
+            ];
+        }
+
+        echo json_encode([
+            "draw" => intval($_GET['draw']),
+            "recordsTotal" => $totalRegistros,
+            "recordsFiltered" => $totalRegistros,
+            "data" => $data
+        ], JSON_UNESCAPED_UNICODE);
     }
+
 
     public static function venta()
     {
@@ -413,7 +489,7 @@ class ApiVentas
                 $cont = $cont + 1;
             }
 
-         
+
 
             /* si el pago es 2 significa que es a credito si es a uno significa que es de contado */
 
