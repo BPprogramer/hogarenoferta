@@ -10,15 +10,15 @@
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
-                                    <h5 class="description-header" id="inicio_ingresos">$0</h5>
-                                    <span class="description-text">INGRESOS TOTALES</span>
+                                    <h5 class="description-header" id="inicio_total_ventas">$0</h5>
+                                    <span class="description-text">Ventas totales</span>
                                 </div>
                             </div>
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
-                                    <h5 class="description-header" id="inicio_ganancias">$0</h5>
-                                    <span class="description-text">GANANCIAS</span>
+                                    <h5 class="description-header" id="inicio_total_recaudos">$0</h5>
+                                    <span class="description-text">RECAUDOS TOTALES</span>
                                 </div>
                             </div>
                             <div class="col-sm-3 col-6">
@@ -28,6 +28,21 @@
                                     <span class="description-text">COSTOS</span>
                                 </div>
                             </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+
+                                    <h5 class="description-header" id="inicio_ganancia_no_realizada">$0</h5>
+                                    <span class="description-text">GANANCIAS NO REALIZADAS</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+
+                                    <h5 class="description-header" id="inicio_ganancia_realizada">$0</h5>
+                                    <span class="description-text">GANANCIAS REALIZADAS</span>
+                                </div>
+                            </div>
+                        
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
@@ -42,7 +57,7 @@
                 </div>
             </div>
         </div>
-       <!--  <div class="row">
+        <!--  <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-footer">
@@ -103,7 +118,7 @@
                             <div class="info-box-content">
                                 <span class="info-box-text">Ventas Pagadas</span>
                                 <span class="info-box-number" id="inicio_numero_ventas">
-                                   0
+                                    0
 
                                 </span>
                             </div>
@@ -116,7 +131,7 @@
                             <span class="info-box-icon text-white bg-azul elevation-1"><i class="fas fa-hand-holding-usd"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text" >Fiados</span>
+                                <span class="info-box-text">Ventas Pendientes</span>
                                 <span class="info-box-number" id="inicio_numero_fiados">
                                     0
 
@@ -188,4 +203,3 @@
         </div>
     </div>
 </section>
-

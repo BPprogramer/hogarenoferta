@@ -29,12 +29,19 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-footer">
-                        <div class="row">
+                         <div class="row">
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
-                                    <h5 class="description-header" id="reporte_ingresos">$0</h5>
-                                    <span class="description-text">INGRESOS TOTALES</span>
+                                    <h5 class="description-header" id="reporte_total_ventas">$0</h5>
+                                    <span class="description-text">Ventas totales</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+
+                                    <h5 class="description-header" id="reporte_total_recaudos">$0</h5>
+                                    <span class="description-text">RECAUDOS TOTALES</span>
                                 </div>
                             </div>
                             <div class="col-sm-3 col-6">
@@ -47,11 +54,18 @@
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
-                                    <h5 class="description-header" id="reporte_ganancias">$0</h5>
-                                    <span class="description-text">GANANCIAS</span>
+                                    <h5 class="description-header" id="reporte_ganancia_no_realizada">$0</h5>
+                                    <span class="description-text">GANANCIAS NO REALIZADAS</span>
                                 </div>
                             </div>
-                          
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+
+                                    <h5 class="description-header" id="reporte_ganancia_realizada">$0</h5>
+                                    <span class="description-text">GANANCIAS REALIZADAS</span>
+                                </div>
+                            </div>
+                        
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
