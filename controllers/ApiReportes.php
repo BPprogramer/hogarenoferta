@@ -59,13 +59,16 @@ class ApiReportes
 
         $inventario = Producto::total('stock*precio_compra');
 
+        $valor_formateado = '$' . number_format(abs($ganancia_realizada));
+        $ganancia_realizada = $ganancia_realizada < 0 ? '-' . $valor_formateado : $valor_formateado;
+
         $informacion = [
             'total_ventas' => '$' . number_format($total_factura),
             'total_recaudos' => '$' . number_format($total_recaudos),
             'costos' => '$' . number_format($costo),
             'ganancia_no_realizada' =>  '$' . number_format($ganancia_no_realizada),
             'ganancia_realizada' => $ganancia_realizada,
-            'inventario' => number_format($inventario['total']),
+            'inventario' => '$' . number_format($inventario['total']),
             'numero_ventas' => $numero_ventas['total'],
             'numero_fiados' => $numero_fiados['total'],
             'numero_pagos' => $numero_pagos['total'],

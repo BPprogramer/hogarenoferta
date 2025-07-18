@@ -40,9 +40,7 @@ class ApiInicio
         $inventario = Producto::total('stock*precio_compra');
 
         $numero_ventas = Venta::contar('pagado', 1);
-
         $numero_fiados = Venta::contar('pagado', 0);
-
         $numero_pagos = Payment::contar();
         $numero_cajas = Caja::contar();
         $numero_productos = Producto::contar();
@@ -57,7 +55,7 @@ class ApiInicio
             'costos' => '$' . number_format($costo),
             'ganancia_no_realizada' =>  '$' . number_format($ganancia_no_realizada),
             'ganancia_realizada' => $ganancia_realizada ,
-            'inventario' => number_format($inventario['total']),
+            'inventario' => '$' . number_format($inventario['total']),
             'numero_ventas' => $numero_ventas['total'],
             'numero_fiados' => $numero_fiados['total'],
             'numero_pagos' => $numero_pagos['total'],
