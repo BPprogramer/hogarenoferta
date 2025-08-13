@@ -1,6 +1,6 @@
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>FERRO</b>AGROPECUARIA</a>
+    <a href="../../index2.html"><b>HOGAR</b>ENOFERTA</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

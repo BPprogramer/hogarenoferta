@@ -66,11 +66,13 @@ class ApiVentas
         $bloque_1 = <<<EOF
            
             <div  style="font-size:10px;width:160px; height:500px; text-align:center; font-size:8px margin-bottom:0;">
-                <strong style="font-size:11px">FERROAGROPECUARIA CAMPOVIDA</strong>
+                <strong style="font-size:11px">HOGAR-EN-OFERTA</strong>
                 <br>
-                Nit: 98395261-7
+                Nit: 100463018-1
                 <br>
-                Cel: 3104624214, 3175881174
+                Cel: 3216196607
+                <br>
+                Correo: hogarenoferta25@gmail.com
                 <br>
                 Atendido por: $vendedor->nombre
                 <br>
@@ -265,66 +267,7 @@ class ApiVentas
 
         $pdf->Output('example_001.pdf', 'I');
     }
-    // public static function ventas()
-    // {
-    //     $ventas = Venta::all();
 
-    //     $i = 0;
-
-    //     $datoJson = '{
-    //      "data": [';
-    //     foreach ($ventas as $key => $venta) {
-    //         $i++;
-    //         $caja = Caja::where('id', $venta->caja_id);
-
-    //         $acciones = "<div class='d-flex' >";
-    //         $acciones .= "<button data-venta-id ='" . $venta->id . "' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Ver</span><i class='fas fa-search'></i></button>";
-
-    //         if ($caja->estado == 0) {
-    //             $acciones .= "<button data-venta-id ='" . $venta->id . "' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
-    //             $acciones .= "<button data-venta-id ='" . $venta->id . "' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
-    //         }
-    //         $acciones .= "<button data-venta-id ='" . $venta->id . "' id='imprimir'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Imprimir</span><i class='fas fa-print'></i></button>";
-    //         $acciones .= "</div>";
-
-
-
-
-    //         $pagado = '';
-    //         if ($venta->pagado == 0) {
-    //             $pagado = "<div class='d-flex justify-content-center' >";
-    //             $pagado .= "<button   type='button' class='btn  w-65 btn-inline btn-danger btn-sm ' style='min-width:70px'>Pendiente</button>";
-    //             $pagado .= "</div >";
-    //         } else {
-    //             $pagado = "<div class='d-flex justify-content-center'>";
-    //             $pagado .= "<button   type='button' class='btn w-65 btn-inline bg-success text-white btn-sm' style='min-width:70px'>Pagado</button>";
-    //             $pagado .= "</div >";
-    //         }
-
-
-
-
-
-    //         $datoJson .= '[
-    //                      "' . $i . '",
-    //                      "' . $venta->codigo . '",
-    //                      "' . number_format($venta->total_factura) . '",
-    //                      "' . number_format($venta->recaudo) . '",
-    //                      "' . $pagado . '",
-    //                       "' . $venta->caja_id + 3000000 . '",
-    //                      "' . $venta->fecha . '",
-    //                      "' . $acciones . '"
-    //              ]';
-    //         if ($key != count($ventas) - 1) {
-    //             $datoJson .= ",";
-    //         }
-    //     }
-
-    //     $datoJson .=  ']}';
-
-
-    //     echo $datoJson;
-    // }
 
     public static function ventas()
     {
